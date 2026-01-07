@@ -12,8 +12,8 @@
     </div>
 
     <div class="bg-white rounded-lg shadow">
-        <div class="overflow-x-auto">
-            <table class="min-w-full divide-y divide-gray-200">
+        <div class="p-4">
+            <table id="usersTable" class="min-w-full divide-y divide-gray-200">
                 <thead class="bg-gray-50">
                     <tr>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Name</th>
@@ -24,21 +24,51 @@
                     </tr>
                 </thead>
                 <tbody class="bg-white divide-y divide-gray-200">
+                    @forelse($users as $user)
                     <tr>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Admin</td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">admin@gmail.com</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ $user->name }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $user->email }}</td>
                         <td class="px-6 py-4 whitespace-nowrap">
-                            <span class="px-2 py-1 text-xs font-semibold rounded-full bg-red-100 text-red-800">Admin</span>
+                            @foreach($user->roles as $role)
+                            <span class="px-2 py-1 text-xs font-semibold rounded-full 
+                                @if($role->name == 'admin') bg-red-100 text-red-800
+                                @else bg-blue-100 text-blue-800 @endif">
+                                {{ ucfirst($role->name) }}
+                            </span>
+                            @endforeach
+                            @if($user->roles->isEmpty())
+                            <span class="px-2 py-1 text-xs font-semibold rounded-full bg-gray-100 text-gray-800">User</span>
+                            @endif
                         </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Today</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $user->created_at->format('M d, Y') }}</td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                            <button class="text-primary hover:text-orange-600 mr-3">Edit</button>
-                            <button class="text-red-600 hover:text-red-800">Delete</button>
+                            <a href="{{ route('admin.users.edit', $user->id) }}" class="text-primary hover:text-orange-600 mr-3">Edit</a>
+                            @if(!$user->hasRole('admin'))
+                            <button onclick="confirmDelete('/admin/users/{{ $user->id }}', 'Delete User?', 'This will permanently delete the user account.')" class="text-red-600 hover:text-red-800">Delete</button>
+                            @endif
                         </td>
                     </tr>
+                    @empty
+                    <tr>
+                        <td colspan="5" class="px-6 py-4 text-center text-gray-500">No users found</td>
+                    </tr>
+                    @endforelse
                 </tbody>
             </table>
         </div>
     </div>
 </div>
+
+<script>
+$(document).ready(function() {
+    $('#usersTable').DataTable({
+        "pageLength": 10,
+        "responsive": true,
+        "order": [[ 0, "asc" ]],
+        "columnDefs": [
+            { "orderable": false, "targets": [4] }
+        ]
+    });
+});
+</script>
 @endsection

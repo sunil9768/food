@@ -1,38 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Desi Delights - Authentic Indian Food Delivery</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        'saffron': '#FF9933',
-                        'curry': '#FF6B35',
-                        'turmeric': '#FDB462'
-                    }
-                }
-            }
-        }
-    </script>
-</head>
-<body class="bg-orange-50">
-    <!-- Header -->
-    <header class="bg-white shadow-md">
-        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
-            <h1 class="text-2xl font-bold text-curry">🍛 Desi Delights</h1>
-            <nav class="hidden md:flex space-x-6">
-                <a href="#menu" class="text-gray-700 hover:text-curry">Menu</a>
-                <a href="#testimonials" class="text-gray-700 hover:text-curry">Reviews</a>
-                <a href="#contact" class="text-gray-700 hover:text-curry">Contact</a>
-            </nav>
-            <button class="bg-curry text-white px-6 py-2 rounded-full hover:bg-orange-600 transition">Order Now</button>
-        </div>
-    </header>
+@extends('layouts.frontend')
 
+@section('content')
     <!-- Hero Section -->
     <section class="bg-gradient-to-r from-saffron to-curry text-white py-20">
         <div class="container mx-auto px-4 flex flex-col lg:flex-row items-center">
@@ -62,39 +30,36 @@
         <div class="container mx-auto px-4">
             <h2 class="text-4xl font-bold text-center text-gray-800 mb-12">Popular Dishes</h2>
             <div class="grid md:grid-cols-3 gap-8">
+                @forelse($popularItems as $item)
                 <div class="bg-orange-50 rounded-xl p-6 shadow-lg hover:shadow-xl transition">
-                    <img src="https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=300&h=200&fit=crop" 
-                         alt="Dal Tadka" class="w-full h-48 object-cover rounded-lg mb-4">
-                    <h3 class="text-xl font-bold text-gray-800 mb-2">Dal Tadka</h3>
-                    <p class="text-gray-600 mb-4">Tempered lentils with aromatic spices</p>
+                    @if($item->image)
+                        <img src="{{ asset($item->image) }}" alt="{{ $item->name }}" class="w-full h-48 object-cover rounded-lg mb-4">
+                    @else
+                        <div class="w-full h-48 bg-gray-200 rounded-lg mb-4 flex items-center justify-center">
+                            <span class="text-gray-400">No Image</span>
+                        </div>
+                    @endif
+                    <h3 class="text-xl font-bold text-gray-800 mb-2">{{ $item->name }}</h3>
+                    <p class="text-gray-600 mb-4">{{ $item->description ?: 'Delicious ' . $item->name }}</p>
                     <div class="flex justify-between items-center">
-                        <span class="text-2xl font-bold text-curry">₹129</span>
-                        <button class="bg-curry text-white px-4 py-2 rounded-full hover:bg-orange-600 transition">Add to Cart</button>
+                        <span class="text-2xl font-bold text-curry">₹{{ number_format($item->price) }}</span>
+                        <button onclick="addToCart({{ $item->id }}, '{{ $item->name }}', {{ $item->price }})" class="bg-curry text-white px-4 py-2 rounded-full hover:bg-orange-600 transition">Add to Cart</button>
                     </div>
                 </div>
-                
-                <div class="bg-orange-50 rounded-xl p-6 shadow-lg hover:shadow-xl transition">
-                    <img src="https://images.unsplash.com/photo-1567188040759-fb8a883dc6d8?w=300&h=200&fit=crop" 
-                         alt="Paneer Butter Masala" class="w-full h-48 object-cover rounded-lg mb-4">
-                    <h3 class="text-xl font-bold text-gray-800 mb-2">Paneer Butter Masala</h3>
-                    <p class="text-gray-600 mb-4">Creamy cottage cheese in rich tomato gravy</p>
-                    <div class="flex justify-between items-center">
-                        <span class="text-2xl font-bold text-curry">₹189</span>
-                        <button class="bg-curry text-white px-4 py-2 rounded-full hover:bg-orange-600 transition">Add to Cart</button>
-                    </div>
+                @empty
+                <div class="col-span-3 text-center py-8">
+                    <p class="text-gray-500 text-lg">No menu items available at the moment.</p>
                 </div>
-                
-                <div class="bg-orange-50 rounded-xl p-6 shadow-lg hover:shadow-xl transition">
-                    <img src="https://images.unsplash.com/photo-1596797038530-2c107229654b?w=300&h=200&fit=crop" 
-                         alt="Biryani" class="w-full h-48 object-cover rounded-lg mb-4">
-                    <h3 class="text-xl font-bold text-gray-800 mb-2">Chicken Biryani</h3>
-                    <p class="text-gray-600 mb-4">Fragrant basmati rice with tender chicken</p>
-                    <div class="flex justify-between items-center">
-                        <span class="text-2xl font-bold text-curry">₹249</span>
-                        <button class="bg-curry text-white px-4 py-2 rounded-full hover:bg-orange-600 transition">Add to Cart</button>
-                    </div>
-                </div>
+                @endforelse
             </div>
+            
+            @if($popularItems->count() > 0)
+            <div class="text-center mt-12">
+                <a href="{{ route('menu') }}" class="bg-curry text-white px-8 py-3 rounded-full hover:bg-orange-600 transition text-lg font-semibold">
+                    View Full Menu
+                </a>
+            </div>
+            @endif
         </div>
     </section>
 
@@ -149,30 +114,4 @@
             </button>
         </div>
     </section>
-
-    <!-- Footer -->
-    <footer id="contact" class="bg-gray-800 text-white py-12">
-        <div class="container mx-auto px-4">
-            <div class="grid md:grid-cols-3 gap-8">
-                <div>
-                    <h3 class="text-xl font-bold mb-4">🍛 Desi Delights</h3>
-                    <p class="text-gray-400">Authentic Indian cuisine delivered fresh to your doorstep</p>
-                </div>
-                <div>
-                    <h4 class="font-bold mb-4">Contact Info</h4>
-                    <p class="text-gray-400">📞 +91 98765 43210</p>
-                    <p class="text-gray-400">📧 orders@desidelights.com</p>
-                </div>
-                <div>
-                    <h4 class="font-bold mb-4">Delivery Hours</h4>
-                    <p class="text-gray-400">Mon-Sun: 11:00 AM - 11:00 PM</p>
-                    <p class="text-gray-400">Free delivery on orders above ₹299</p>
-                </div>
-            </div>
-            <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
-                <p>&copy; 2024 Desi Delights. All rights reserved.</p>
-            </div>
-        </div>
-    </footer>
-</body>
-</html>
+@endsection
