@@ -29,11 +29,34 @@ A complete Laravel-based food delivery application with admin panel, user dashbo
 
 ### Key Functionality
 - **Role-based Authentication** (Admin/User)
-- **Email Notifications** with login credentials
+- **Event-Driven Email System** with automated notifications
+- **Order Notifications** to admin (easystep25@gmail.com)
+- **Status Update Emails** to customers
+- **Welcome Emails** with login credentials for new users
 - **Image Upload** for menu items
 - **SweetAlert Integration** for better UX
 - **DataTables** for data management
 - **AJAX Operations** for seamless updates
+
+## 📧 Event-Driven Email System
+
+### Email Notifications
+- **Order Placed** → Admin receives notification at `easystep25@gmail.com`
+- **New User Registration** → Customer receives welcome email with login credentials
+- **Order Status Update** → Customer receives status change notifications
+
+### Events & Listeners
+```php
+// Events
+OrderPlaced::class → SendOrderNotification::class
+UserRegistered::class → SendWelcomeEmailToUser::class
+OrderStatusUpdated::class → SendCustomerStatusUpdate::class
+```
+
+### Email Templates
+- `order-notification.blade.php` - Admin order notifications
+- `welcome.blade.php` - New user welcome emails
+- `order-status-update.blade.php` - Customer status updates
 
 ## 🛠️ Installation
 
@@ -173,7 +196,8 @@ A complete Laravel-based food delivery application with admin panel, user dashbo
 - **Frontend:** Blade Templates, Tailwind CSS
 - **Database:** MySQL
 - **Authentication:** Laravel Auth + Spatie Permission
-- **Email:** Laravel Mail with SMTP
+- **Email System:** Event-Driven with Laravel Mail + SMTP
+- **Events:** OrderPlaced, UserRegistered, OrderStatusUpdated
 - **JavaScript:** Vanilla JS, SweetAlert2, DataTables
 - **File Storage:** Local Storage
 
