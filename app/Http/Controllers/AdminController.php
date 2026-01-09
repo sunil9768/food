@@ -10,6 +10,7 @@ use App\Models\User;
 use App\Models\MenuItem;
 use App\Models\Category;
 use App\Models\Setting;
+use App\Events\OrderStatusUpdated;
 use Illuminate\Support\Str;
 
 class AdminController extends Controller
@@ -232,8 +233,12 @@ class AdminController extends Controller
         ]);
 
         $order = Order::findOrFail($id);
+        $oldStatus = $order->status;
         $order->status = $request->status;
         $order->save();
+
+        // Dispatch event to send email to customer
+        OrderStatusUpdated::dispatch($order, $oldStatus, $request->status);
 
         return response()->json(['success' => true, 'message' => 'Order status updated successfully']);
     }

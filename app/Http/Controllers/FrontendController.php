@@ -7,11 +7,11 @@ use App\Models\MenuItem;
 use App\Models\Category;
 use App\Models\User;
 use App\Models\Order;
+use App\Events\OrderPlaced;
+use App\Events\UserRegistered;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Auth;
-use App\Mail\WelcomeEmail;
 
 class FrontendController extends Controller
 {
@@ -143,7 +143,7 @@ class FrontendController extends Controller
         }
 
         // Create order
-        Order::create([
+        $order = Order::create([
             'customer_name' => $customerName,
             'customer_email' => $customerEmail,
             'customer_phone' => $customerPhone,
@@ -154,13 +154,16 @@ class FrontendController extends Controller
             'notes' => $request->notes
         ]);
 
-        // Send email only for new users
+        // Dispatch events
+        OrderPlaced::dispatch($order);
+        
         if (!$isLoggedIn) {
-            Mail::to($customerEmail)->send(new WelcomeEmail($customerName, $customerEmail, $password));
-            $message = 'Order placed successfully! Check your email for login details.';
-        } else {
-            $message = 'Order placed successfully! You can track it in your dashboard.';
+            UserRegistered::dispatch($user, $password);
         }
+
+        $message = !$isLoggedIn 
+            ? 'Order placed successfully! Check your email for login details.'
+            : 'Order placed successfully! You can track it in your dashboard.';
 
         return redirect()->route('home')->with('success', $message);
     }
