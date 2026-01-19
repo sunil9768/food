@@ -1,0 +1,57 @@
+name: Deploy to Hostinger
+
+on:
+  push:
+    branches: [ "master" ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Checkout repo
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # 2. Setup SSH
+      - name: Setup SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_DEPLOY_KEY_LIVE }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -p 65002 -H ${{ secrets.HOST_LIVE }} >> ~/.ssh/known_hosts
+
+      # 3. Test SSH connection
+      - name: Test SSH Connection
+        run: |
+          ssh -i ~/.ssh/id_rsa -p 65002 -o StrictHostKeyChecking=no \
+            ${{ secrets.USER }}@${{ secrets.HOST_LIVE }} "echo '✅ Connected!' && hostname && whoami && pwd"
+
+      # 4. Deploy to Arunil domain
+      - name: Deploy to Arunil
+        run: |
+          REMOTE_PATH="/home/u867571827/domains/arunil.in/public_html/food"
+          rsync -az \
+            --exclude='.git' \
+            --exclude='node_modules' \
+            --exclude='.github' \
+            --exclude='tests' \
+            --exclude='storage/app' \
+            --exclude='storage/logs' \
+            --exclude='database/database.sqlite' \
+            -e "ssh -i ~/.ssh/id_rsa -p 65002 -o StrictHostKeyChecking=no" \
+            ./ ${{ secrets.USER }}@${{ secrets.HOST_LIVE }}:$REMOTE_PATH/
+
+
+      # 6. Run Laravel commands on Arunil
+      - name: Run Laravel commands on Arunil
+        run: |
+          REMOTE_PATH="/home/u867571827/domains/arunil.in/public_html/food"
+          ssh -i ~/.ssh/id_rsa -p 65002 -o StrictHostKeyChecking=no \
+            ${{ secrets.USER }}@${{ secrets.HOST_LIVE }} "
+              cd $REMOTE_PATH;
+              php artisan config:cache || true;
+              php artisan route:cache || true;
+              php artisan view:cache || true;
+              php artisan migrate --force || true;
+            "
