@@ -5,6 +5,8 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\FrontendController;
 use App\Http\Controllers\CartController;
 
+use App\Http\Controllers\AuthController;
+
 Route::get('/', [FrontendController::class, 'index'])->name('home');
 Route::get('/menu', [FrontendController::class, 'menu'])->name('menu');
 Route::get('/cart', [FrontendController::class, 'cart'])->name('cart.view');
@@ -20,26 +22,11 @@ Route::middleware(['auth', 'role:user'])->prefix('my')->group(function () {
     Route::post('/profile', [App\Http\Controllers\UserDashboardController::class, 'updateProfile'])->name('user.profile.update');
 });
 
-// Registration with auto role assignment
-Route::post('/register', function(\Illuminate\Http\Request $request) {
-    $request->validate([
-        'name' => 'required|string|max:255',
-        'email' => 'required|string|email|max:255|unique:users',
-        'password' => 'required|string|min:8|confirmed',
-    ]);
-
-    $user = \App\Models\User::create([
-        'name' => $request->name,
-        'email' => $request->email,
-        'password' => \Hash::make($request->password),
-    ]);
-    
-    $user->assignRole('user');
-    
-    \Auth::login($user);
-    
-    return redirect()->route('home')->with('success', 'Registration successful!');
-})->name('register');
+// Auth routes
+Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
+Route::post('/login', [AuthController::class, 'login']);
+Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
+Route::post('/register', [AuthController::class, 'register']);
 
 // Admin Routes
 Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
@@ -65,10 +52,7 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
     Route::put('/orders/{id}/status', [AdminController::class, 'updateOrderStatus'])->name('admin.orders.update-status');
 });
 
-Auth::routes();
+Auth::routes(['register' => false, 'login' => false]);
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-
-Auth::routes();
-
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+ 
