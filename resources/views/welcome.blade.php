@@ -33,17 +33,22 @@
                 @forelse($popularItems as $item)
                 <div class="bg-orange-50 rounded-xl p-6 shadow-lg hover:shadow-xl transition">
                     @if($item->image)
-                        <img src="{{ asset($item->image) }}" alt="{{ $item->name }}" class="w-full h-48 object-cover rounded-lg mb-4">
+                        <img src="{{ asset('storage/' . $item->image) }}" alt="{{ $item->name }}" class="w-full h-48 object-cover rounded-lg mb-4">
                     @else
                         <div class="w-full h-48 bg-gray-200 rounded-lg mb-4 flex items-center justify-center">
-                            <span class="text-gray-400">No Image</span>
+                            <span class="text-gray-400 text-2xl">🍽️</span>
                         </div>
                     @endif
-                    <h3 class="text-xl font-bold text-gray-800 mb-2">{{ $item->name }}</h3>
+                    <div class="flex justify-between items-start mb-2">
+                        <h3 class="text-xl font-bold text-gray-800">{{ $item->name }}</h3>
+                        @if($item->vendor)
+                            <span class="bg-orange-200 text-orange-800 text-xs px-2 py-1 rounded-full">🍛 {{ $item->vendor->restaurant_name ?: $item->vendor->name }}</span>
+                        @endif
+                    </div>
                     <p class="text-gray-600 mb-4">{{ $item->description ?: 'Delicious ' . $item->name }}</p>
                     <div class="flex justify-between items-center">
-                        <span class="text-2xl font-bold text-curry">₹{{ number_format($item->price) }}</span>
-                        <button onclick="addToCart({{ $item->id }}, '{{ $item->name }}', {{ $item->price }})" class="bg-curry text-white px-4 py-2 rounded-full hover:bg-orange-600 transition">Add to Cart</button>
+                        <span class="text-2xl font-bold text-orange-600">₹{{ number_format($item->price) }}</span>
+                        <button onclick="addToCart({{ $item->id }}, '{{ $item->name }}', {{ $item->price }})" class="bg-orange-500 text-white px-4 py-2 rounded-full hover:bg-orange-600 transition">Add to Cart</button>
                     </div>
                 </div>
                 @empty

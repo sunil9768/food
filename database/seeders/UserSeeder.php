@@ -35,5 +35,16 @@ class UserSeeder extends Seeder
         );
         
         $user->assignRole('user');
+        
+        // Create vendor user
+        $vendor = User::firstOrCreate(
+            ['email' => 'vendor@gmail.com'],
+            [
+                'name' => 'Test Vendor',
+                'password' => Hash::make('12345678'),
+            ]
+        );
+        
+        $vendor->assignRole('vendor');
     }
 }

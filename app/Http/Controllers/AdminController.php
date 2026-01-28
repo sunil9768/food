@@ -89,6 +89,30 @@ class AdminController extends Controller
         return view('admin.menu-create', compact('categories'));
     }
 
+    public function storeMenuItem(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'required|string',
+            'price' => 'required|numeric|min:0',
+            'category_id' => 'required|exists:categories,id',
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
+
+        $imagePath = $request->file('image')->store('menu-items', 'public');
+
+        MenuItem::create([
+            'name' => $request->name,
+            'description' => $request->description,
+            'price' => $request->price,
+            'category_id' => $request->category_id,
+            'image' => $imagePath,
+            'is_active' => true,
+        ]);
+
+        return redirect()->route('admin.menu')->with('success', 'Menu item created successfully!');
+    }
+
     public function editMenuItem($id)
     {
         $menuItem = MenuItem::findOrFail($id);

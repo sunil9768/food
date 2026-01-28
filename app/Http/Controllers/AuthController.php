@@ -31,6 +31,8 @@ class AuthController extends Controller
             
             if ($user->hasRole('admin')) {
                 return redirect()->route('admin.dashboard');
+            } elseif ($user->hasRole('vendor')) {
+                return redirect()->route('vendor.dashboard');
             } else {
                 return redirect()->route('user.dashboard');
             }
@@ -60,5 +62,33 @@ class AuthController extends Controller
         Auth::login($user);
         
         return redirect()->route('user.dashboard')->with('success', 'Registration successful! Welcome to Desi Delights!');
+    }
+
+    public function showVendorRegister()
+    {
+        return view('auth.vendor-register');
+    }
+
+    public function vendorRegister(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'restaurant_name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:8|confirmed',
+        ]);
+
+        $user = User::create([
+            'name' => $request->name,
+            'restaurant_name' => $request->restaurant_name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+        ]);
+        
+        $user->assignRole('vendor');
+        
+        Auth::login($user);
+        
+        return redirect()->route('vendor.dashboard')->with('success', 'Vendor registration successful! Welcome to Desi Delights!');
     }
 }

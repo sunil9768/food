@@ -18,7 +18,7 @@ class FrontendController extends Controller
     public function index()
     {
         $popularItems = MenuItem::where('is_active', true)
-            ->with('category')
+            ->with(['category', 'vendor'])
             ->orderBy('created_at', 'desc')
             ->take(6)
             ->get();
@@ -37,13 +37,28 @@ class FrontendController extends Controller
     
     public function menu()
     {
-        $categories = Category::where('is_active', true)
-            ->with(['menuItems' => function($query) {
+        // Get all vendors who have active menu items
+        $vendors = User::role('vendor')
+            ->whereHas('menuItems', function($query) {
+                $query->where('is_active', true);
+            })
+            ->withCount(['menuItems' => function($query) {
                 $query->where('is_active', true);
             }])
             ->get();
             
-        return view('frontend.menu', compact('categories'));
+        return view('frontend.menu', compact('vendors'));
+    }
+
+    public function vendorMenu($vendorId)
+    {
+        $vendor = User::role('vendor')
+            ->with(['menuItems' => function($query) {
+                $query->where('is_active', true)->with('category');
+            }])
+            ->findOrFail($vendorId);
+            
+        return view('frontend.vendor-menu', compact('vendor'));
     }
     
     public function checkout(Request $request)
@@ -135,6 +150,7 @@ class FrontendController extends Controller
                 $itemTotal = $menuItem->price * $item['quantity'];
                 $total += $itemTotal;
                 $orderItems[] = [
+                    'menu_item_id' => $menuItem->id,
                     'name' => $menuItem->name,
                     'price' => $menuItem->price,
                     'quantity' => $item['quantity']

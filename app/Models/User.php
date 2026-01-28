@@ -22,6 +22,8 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'restaurant_name',
+        'banner_image',
     ];
 
     /**
@@ -45,5 +47,10 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function menuItems()
+    {
+        return $this->hasMany(MenuItem::class, 'vendor_id');
     }
 }
