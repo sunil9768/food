@@ -62,6 +62,9 @@
                     <p class="text-gray-600">Don't have an account? 
                         <a href="{{ route('register') }}" class="text-orange-600 hover:text-orange-500 font-medium">Sign up here</a>
                     </p>
+                    <p class="text-gray-600 mt-2">Want to become a vendor? 
+                        <a href="{{ route('vendor.register') }}" class="text-orange-600 hover:text-orange-500 font-medium">Register as Vendor</a>
+                    </p>
                 </div>
             </div>
             

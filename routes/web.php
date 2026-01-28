@@ -9,6 +9,7 @@ use App\Http\Controllers\AuthController;
 
 Route::get('/', [FrontendController::class, 'index'])->name('home');
 Route::get('/menu', [FrontendController::class, 'menu'])->name('menu');
+Route::get('/vendor/{id}/menu', [FrontendController::class, 'vendorMenu'])->name('vendor.menu.view');
 Route::get('/cart', [FrontendController::class, 'cart'])->name('cart.view');
 Route::post('/checkout', [FrontendController::class, 'checkout'])->name('checkout');
 Route::post('/place-order', [FrontendController::class, 'placeOrder'])->name('place.order');
@@ -27,6 +28,8 @@ Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
 Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
 Route::post('/register', [AuthController::class, 'register']);
+Route::get('/vendor/register', [AuthController::class, 'showVendorRegister'])->name('vendor.register');
+Route::post('/vendor/register', [AuthController::class, 'vendorRegister']);
 
 // Admin Routes
 Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
@@ -50,6 +53,21 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
     Route::get('/settings', [AdminController::class, 'settings'])->name('admin.settings');
     Route::post('/settings', [AdminController::class, 'updateSettings'])->name('admin.settings.update');
     Route::put('/orders/{id}/status', [AdminController::class, 'updateOrderStatus'])->name('admin.orders.update-status');
+});
+
+// Vendor Routes
+Route::middleware(['auth', 'role:vendor'])->prefix('vendor')->group(function () {
+    Route::get('/dashboard', [App\Http\Controllers\VendorController::class, 'dashboard'])->name('vendor.dashboard');
+    Route::get('/menu', [App\Http\Controllers\VendorController::class, 'menu'])->name('vendor.menu');
+    Route::get('/menu/create', [App\Http\Controllers\VendorController::class, 'createMenuItem'])->name('vendor.menu.create');
+    Route::post('/menu', [App\Http\Controllers\VendorController::class, 'storeMenuItem'])->name('vendor.menu.store');
+    Route::get('/menu/{id}/edit', [App\Http\Controllers\VendorController::class, 'editMenuItem'])->name('vendor.menu.edit');
+    Route::put('/menu/{id}', [App\Http\Controllers\VendorController::class, 'updateMenuItem'])->name('vendor.menu.update');
+    Route::delete('/menu/{id}', [App\Http\Controllers\VendorController::class, 'deleteMenuItem'])->name('vendor.menu.delete');
+    Route::get('/orders', [App\Http\Controllers\VendorController::class, 'orders'])->name('vendor.orders');
+    Route::put('/orders/{id}/status', [App\Http\Controllers\VendorController::class, 'updateOrderStatus'])->name('vendor.orders.update-status');
+    Route::get('/profile', [App\Http\Controllers\VendorController::class, 'profile'])->name('vendor.profile');
+    Route::post('/profile', [App\Http\Controllers\VendorController::class, 'updateProfile'])->name('vendor.profile.update');
 });
 
 Auth::routes(['register' => false, 'login' => false]);
