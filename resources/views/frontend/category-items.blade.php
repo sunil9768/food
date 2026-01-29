@@ -1,13 +1,20 @@
 @extends('layouts.frontend')
 
-@section('title', 'All Menu Items - Desi Delights')
+@section('title', $category->name . ' - Desi Delights')
 
 @section('content')
-    <!-- Menu Section -->
+    <!-- Category Header -->
+    <section class="py-16 bg-gradient-to-r from-orange-400 to-red-500 text-white">
+        <div class="container mx-auto px-4 text-center">
+            <h1 class="text-5xl font-bold mb-4">{{ $category->name }}</h1>
+            <p class="text-xl">{{ $category->description ?: 'Delicious ' . $category->name . ' items' }}</p>
+            <p class="text-lg mt-2">{{ $menuItems->total() }} items available</p>
+        </div>
+    </section>
+
+    <!-- Menu Items -->
     <section class="py-16">
         <div class="container mx-auto px-4">
-            <h1 class="text-4xl font-bold text-center text-gray-800 mb-12">All Menu Items</h1>
-            
             <div class="grid md:grid-cols-3 lg:grid-cols-4 gap-6">
                 @forelse($menuItems as $item)
                 <div class="bg-white rounded-xl p-4 shadow-lg hover:shadow-xl transition">
@@ -25,14 +32,11 @@
                         <p class="text-gray-600 text-sm mb-3 line-clamp-2">{{ $item->description }}</p>
                     @endif
                     
-                    <div class="flex items-center justify-between mb-3">
-                        @if($item->vendor)
+                    @if($item->vendor)
+                        <div class="mb-3">
                             <span class="bg-orange-100 text-orange-800 text-xs px-2 py-1 rounded-full">{{ $item->vendor->restaurant_name ?: $item->vendor->name }}</span>
-                        @endif
-                        @if($item->category)
-                            <span class="bg-gray-100 text-gray-700 text-xs px-2 py-1 rounded-full">{{ $item->category->name }}</span>
-                        @endif
-                    </div>
+                        </div>
+                    @endif
                     
                     <div class="flex justify-between items-center">
                         <span class="text-lg font-bold text-orange-600">₹{{ number_format($item->price) }}</span>
@@ -43,8 +47,8 @@
                 </div>
                 @empty
                 <div class="col-span-full text-center py-16">
-                    <h2 class="text-2xl font-bold text-gray-600 mb-4">No Menu Items Available!</h2>
-                    <p class="text-gray-500">We're working on adding menu items to our platform.</p>
+                    <h2 class="text-2xl font-bold text-gray-600 mb-4">No Items Available!</h2>
+                    <p class="text-gray-500">No items found in this category.</p>
                     <a href="{{ route('home') }}" class="inline-block mt-6 bg-orange-500 text-white px-6 py-3 rounded-full hover:bg-orange-600 transition">
                         Back to Home
                     </a>
