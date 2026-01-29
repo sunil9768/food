@@ -41,6 +41,7 @@ class UserSeeder extends Seeder
             ['email' => 'vendor@gmail.com'],
             [
                 'name' => 'Test Vendor',
+                'restaurant_name' => 'Skyfall Restaurant',
                 'password' => Hash::make('12345678'),
             ]
         );

@@ -10,6 +10,7 @@ class SendOrderNotification
 {
     public function handle(OrderPlaced $event): void
     {
-        Mail::to('easystep25@gmail.com')->send(new OrderNotification($event->order));
+        $order = $event->order->load('orderItems.menuItem');
+        Mail::to('easystep25@gmail.com')->send(new OrderNotification($order));
     }
 }

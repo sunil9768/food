@@ -20,6 +20,7 @@ Route::middleware(['auth', 'role:user'])->prefix('my')->group(function () {
     Route::get('/dashboard', [App\Http\Controllers\UserDashboardController::class, 'dashboard'])->name('user.dashboard');
     Route::get('/orders', [App\Http\Controllers\UserDashboardController::class, 'orders'])->name('user.orders');
     Route::get('/orders/{id}', [App\Http\Controllers\UserDashboardController::class, 'orderDetails'])->name('user.order.details');
+    Route::get('/orders/{id}/invoice', [App\Http\Controllers\UserDashboardController::class, 'invoice'])->name('user.order.invoice');
     Route::get('/profile', [App\Http\Controllers\UserDashboardController::class, 'profile'])->name('user.profile');
     Route::post('/profile', [App\Http\Controllers\UserDashboardController::class, 'updateProfile'])->name('user.profile.update');
 });
@@ -39,6 +40,7 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
     Route::get('/users/{id}/edit', [AdminController::class, 'editUser'])->name('admin.users.edit');
     Route::put('/users/{id}', [AdminController::class, 'updateUser'])->name('admin.users.update');
     Route::get('/orders', [AdminController::class, 'orders'])->name('admin.orders');
+    Route::get('/orders/{id}', [AdminController::class, 'orderDetails'])->name('admin.order.details');
     Route::get('/menu', [AdminController::class, 'menu'])->name('admin.menu');
     Route::get('/menu/create', [AdminController::class, 'createMenuItem'])->name('admin.menu.create');
     Route::post('/menu', [AdminController::class, 'storeMenuItem'])->name('admin.menu.store');
@@ -54,6 +56,7 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
     Route::get('/settings', [AdminController::class, 'settings'])->name('admin.settings');
     Route::post('/settings', [AdminController::class, 'updateSettings'])->name('admin.settings.update');
     Route::put('/orders/{id}/status', [AdminController::class, 'updateOrderStatus'])->name('admin.orders.update-status');
+    Route::get('/orders/{id}/invoice', [AdminController::class, 'invoice'])->name('admin.order.invoice');
 });
 
 // Vendor Routes
@@ -66,7 +69,8 @@ Route::middleware(['auth', 'role:vendor'])->prefix('vendor')->group(function () 
     Route::put('/menu/{id}', [App\Http\Controllers\VendorController::class, 'updateMenuItem'])->name('vendor.menu.update');
     Route::delete('/menu/{id}', [App\Http\Controllers\VendorController::class, 'deleteMenuItem'])->name('vendor.menu.delete');
     Route::get('/orders', [App\Http\Controllers\VendorController::class, 'orders'])->name('vendor.orders');
-    Route::put('/orders/{id}/status', [App\Http\Controllers\VendorController::class, 'updateOrderStatus'])->name('vendor.orders.update-status');
+    Route::get('/orders/{id}', [App\Http\Controllers\VendorController::class, 'orderDetails'])->name('vendor.order.details');
+    Route::get('/orders/{id}/invoice', [App\Http\Controllers\VendorController::class, 'invoice'])->name('vendor.order.invoice');
     Route::get('/profile', [App\Http\Controllers\VendorController::class, 'profile'])->name('vendor.profile');
     Route::post('/profile', [App\Http\Controllers\VendorController::class, 'updateProfile'])->name('vendor.profile.update');
 });

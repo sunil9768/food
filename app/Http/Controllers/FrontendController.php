@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\MenuItem;
 use App\Models\Category;
 use App\Models\User;
+use App\Models\OrderItem;
 use App\Models\Order;
 use App\Events\OrderPlaced;
 use App\Events\UserRegistered;
@@ -187,9 +188,18 @@ class FrontendController extends Controller
             'customer_address' => $request->customer_address,
             'total_amount' => $total,
             'payment_method' => $request->payment_method,
-            'items' => $orderItems,
             'notes' => $request->notes
         ]);
+
+        // Create order items
+        foreach ($orderItems as $item) {
+            OrderItem::create([
+                'order_id' => $order->id,
+                'menu_item_id' => $item['menu_item_id'],
+                'quantity' => $item['quantity'],
+                'price' => $item['price']
+            ]);
+        }
 
         // Dispatch events
         OrderPlaced::dispatch($order);
@@ -202,6 +212,6 @@ class FrontendController extends Controller
             ? 'Order placed successfully! Check your email for login details.'
             : 'Order placed successfully! You can track it in your dashboard.';
 
-        return redirect()->route('home')->with('success', $message);
+        return redirect()->route('home')->with('success', $message)->with('clearCart', true);
     }
 }

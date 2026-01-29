@@ -17,14 +17,17 @@ class VendorController extends Controller
         $vendor = Auth::user();
         $totalMenuItems = MenuItem::where('vendor_id', $vendor->id)->count();
         
-        // Get orders that contain vendor's items
-        $vendorMenuItemIds = MenuItem::where('vendor_id', $vendor->id)->pluck('id')->toArray();
-        $totalOrders = Order::whereRaw('JSON_EXTRACT(items, "$[*].menu_item_id") REGEXP ?', [implode('|', $vendorMenuItemIds)])->count();
+        $totalOrders = Order::whereHas('orderItems.menuItem', function($query) use ($vendor) {
+            $query->where('vendor_id', $vendor->id);
+        })->count();
         
-        $recentOrders = Order::whereRaw('JSON_EXTRACT(items, "$[*].menu_item_id") REGEXP ?', [implode('|', $vendorMenuItemIds)])
-            ->latest()
-            ->take(5)
-            ->get();
+        $recentOrders = Order::whereHas('orderItems.menuItem', function($query) use ($vendor) {
+            $query->where('vendor_id', $vendor->id);
+        })->with(['orderItems' => function($query) use ($vendor) {
+            $query->whereHas('menuItem', function($q) use ($vendor) {
+                $q->where('vendor_id', $vendor->id);
+            })->with('menuItem');
+        }])->latest()->take(5)->get();
 
         return view('vendor.dashboard', compact('totalMenuItems', 'totalOrders', 'recentOrders'));
     }
@@ -119,23 +122,13 @@ class VendorController extends Controller
 
     public function orders()
     {
-        $vendorMenuItemIds = MenuItem::where('vendor_id', Auth::id())->pluck('id')->toArray();
-        
-        if (empty($vendorMenuItemIds)) {
-            $orders = collect();
-        } else {
-            $orders = Order::whereRaw('JSON_EXTRACT(items, "$[*].menu_item_id") REGEXP ?', [implode('|', $vendorMenuItemIds)])
-                ->latest()
-                ->get()
-                ->map(function($order) use ($vendorMenuItemIds) {
-                    // Filter items to only show vendor's items
-                    $vendorItems = collect($order->items)->filter(function($item) use ($vendorMenuItemIds) {
-                        return in_array($item['menu_item_id'], $vendorMenuItemIds);
-                    });
-                    $order->vendor_items = $vendorItems;
-                    return $order;
-                });
-        }
+        $orders = Order::whereHas('orderItems.menuItem', function($query) {
+            $query->where('vendor_id', Auth::id());
+        })->with(['orderItems' => function($query) {
+            $query->whereHas('menuItem', function($q) {
+                $q->where('vendor_id', Auth::id());
+            })->with('menuItem');
+        }])->latest()->get();
 
         return view('vendor.orders', compact('orders'));
     }
@@ -180,17 +173,29 @@ class VendorController extends Controller
         return redirect()->route('vendor.profile')->with('success', 'Profile updated successfully!');
     }
 
-    public function updateOrderStatus(Request $request, $id)
+    public function invoice($id)
     {
-        $request->validate([
-            'status' => 'required|in:pending,confirmed,preparing,ready,delivered,cancelled'
-        ]);
+        $order = Order::whereHas('orderItems.menuItem', function($query) {
+            $query->where('vendor_id', Auth::id());
+        })->with(['orderItems' => function($query) {
+            $query->whereHas('menuItem', function($q) {
+                $q->where('vendor_id', Auth::id());
+            })->with('menuItem');
+        }])->findOrFail($id);
+        
+        return view('vendor.invoice', compact('order'));
+    }
 
-        $order = Order::findOrFail($id);
-        $oldStatus = $order->status;
-        $order->status = $request->status;
-        $order->save();
-
-        return response()->json(['success' => true, 'message' => 'Order status updated successfully']);
+    public function orderDetails($id)
+    {
+        $order = Order::whereHas('orderItems.menuItem', function($query) {
+            $query->where('vendor_id', Auth::id());
+        })->with(['orderItems' => function($query) {
+            $query->whereHas('menuItem', function($q) {
+                $q->where('vendor_id', Auth::id());
+            })->with('menuItem');
+        }])->findOrFail($id);
+        
+        return view('vendor.order-details', compact('order'));
     }
 }

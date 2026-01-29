@@ -73,7 +73,7 @@ class AdminController extends Controller
 
     public function orders()
     {
-        $orders = Order::latest()->get();
+        $orders = Order::with('orderItems')->latest()->get();
         return view('admin.orders', compact('orders'));
     }
 
@@ -265,5 +265,17 @@ class AdminController extends Controller
         OrderStatusUpdated::dispatch($order, $oldStatus, $request->status);
 
         return response()->json(['success' => true, 'message' => 'Order status updated successfully']);
+    }
+
+    public function orderDetails($id)
+    {
+        $order = Order::with('orderItems.menuItem')->findOrFail($id);
+        return view('admin.order-details', compact('order'));
+    }
+
+    public function invoice($id)
+    {
+        $order = Order::with('orderItems.menuItem')->findOrFail($id);
+        return view('admin.invoice', compact('order'));
     }
 }
