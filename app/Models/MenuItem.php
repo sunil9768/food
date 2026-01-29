@@ -17,4 +17,9 @@ class MenuItem extends Model
     {
         return $this->belongsTo(User::class, 'vendor_id');
     }
+
+    public function orderItems()
+    {
+        return $this->hasMany(OrderItem::class);
+    }
 }

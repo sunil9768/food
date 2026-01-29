@@ -19,8 +19,8 @@
     
     <h3>Items:</h3>
     <ul>
-        @foreach($order->items as $item)
-            <li>{{ $item['name'] }} - Qty: {{ $item['quantity'] }} - ₹{{ $item['price'] }}</li>
+        @foreach($order->orderItems as $item)
+            <li>{{ $item->menuItem->name }} - Qty: {{ $item->quantity }} - ₹{{ $item->price }}</li>
         @endforeach
     </ul>
     

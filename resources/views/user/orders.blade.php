@@ -28,8 +28,8 @@
                 <div>
                     <h4 class="font-semibold mb-2">Items Ordered:</h4>
                     <ul class="text-sm text-gray-600">
-                        @foreach($order->items as $item)
-                        <li>{{ $item['name'] }} x{{ $item['quantity'] }} - ₹{{ number_format($item['price'] * $item['quantity']) }}</li>
+                        @foreach($order->orderItems as $item)
+                        <li>{{ $item->menuItem->name }} x{{ $item->quantity }} - ₹{{ number_format($item->price * $item->quantity) }}</li>
                         @endforeach
                     </ul>
                 </div>
@@ -41,12 +41,17 @@
                 </div>
             </div>
             
-            <div class="flex justify-between items-center">
-                <div class="text-lg font-bold">Total: ₹{{ number_format($order->total_amount) }}</div>
-                <a href="{{ route('user.order.details', $order->id) }}" class="text-curry hover:text-orange-600 font-semibold">
-                    View Details →
-                </a>
-            </div>
+                <div class="flex justify-between items-center">
+                    <div class="text-lg font-bold">Total: ₹{{ number_format($order->total_amount) }}</div>
+                    <div>
+                        <a href="{{ route('user.order.details', $order->id) }}" class="text-curry hover:text-orange-600 font-semibold mr-4">
+                            View Details →
+                        </a>
+                        <a href="{{ route('user.order.invoice', $order->id) }}" class="text-blue-600 hover:text-blue-800 font-semibold">
+                            Invoice →
+                        </a>
+                    </div>
+                </div>
         </div>
         @endforeach
     </div>

@@ -18,12 +18,14 @@ class UserDashboardController extends Controller
     public function dashboard()
     {
         $user = Auth::user();
-        $currentOrder = Order::where('customer_email', $user->email)
+        $currentOrder = Order::with('orderItems.menuItem')
+                            ->where('customer_email', $user->email)
                             ->whereIn('status', ['pending', 'confirmed', 'preparing', 'out_for_delivery'])
                             ->latest()
                             ->first();
         
-        $orderHistory = Order::where('customer_email', $user->email)
+        $orderHistory = Order::with('orderItems.menuItem')
+                            ->where('customer_email', $user->email)
                             ->latest()
                             ->take(5)
                             ->get();
@@ -33,7 +35,8 @@ class UserDashboardController extends Controller
 
     public function orders()
     {
-        $orders = Order::where('customer_email', Auth::user()->email)
+        $orders = Order::with('orderItems.menuItem')
+                      ->where('customer_email', Auth::user()->email)
                       ->latest()
                       ->paginate(10);
         
@@ -42,10 +45,20 @@ class UserDashboardController extends Controller
 
     public function orderDetails($id)
     {
-        $order = Order::where('customer_email', Auth::user()->email)
+        $order = Order::with('orderItems.menuItem')
+                     ->where('customer_email', Auth::user()->email)
                      ->findOrFail($id);
         
         return view('user.order-details', compact('order'));
+    }
+
+    public function invoice($id)
+    {
+        $order = Order::with('orderItems.menuItem')
+                     ->where('customer_email', Auth::user()->email)
+                     ->findOrFail($id);
+        
+        return view('user.invoice', compact('order'));
     }
 
     public function profile()

@@ -70,29 +70,24 @@
                     </thead>
                     <tbody class="bg-white divide-y divide-gray-200">
                         @foreach($recentOrders as $order)
-                            @foreach($order->items as $item)
-                                @php
-                                    $menuItem = \App\Models\MenuItem::find($item['menu_item_id']);
-                                @endphp
-                                @if($menuItem && $menuItem->vendor_id == Auth::id())
-                                    <tr>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">#{{ $order->id }}</td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $item['name'] }}</td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $item['quantity'] }}</td>
-                                        <td class="px-6 py-4 whitespace-nowrap">
-                                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
-                                                @if($order->status == 'pending') bg-yellow-100 text-yellow-800
-                                                @elseif($order->status == 'confirmed') bg-blue-100 text-blue-800
-                                                @elseif($order->status == 'preparing') bg-orange-100 text-orange-800
-                                                @elseif($order->status == 'ready') bg-purple-100 text-purple-800
-                                                @elseif($order->status == 'delivered') bg-green-100 text-green-800
-                                                @else bg-red-100 text-red-800 @endif">
-                                                {{ ucfirst($order->status) }}
-                                            </span>
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $order->created_at->format('M d, Y') }}</td>
-                                    </tr>
-                                @endif
+                            @foreach($order->orderItems as $item)
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">#{{ $order->id }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $item->menuItem->name }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $item->quantity }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
+                                            @if($order->status == 'pending') bg-yellow-100 text-yellow-800
+                                            @elseif($order->status == 'confirmed') bg-blue-100 text-blue-800
+                                            @elseif($order->status == 'preparing') bg-orange-100 text-orange-800
+                                            @elseif($order->status == 'ready') bg-purple-100 text-purple-800
+                                            @elseif($order->status == 'delivered') bg-green-100 text-green-800
+                                            @else bg-red-100 text-red-800 @endif">
+                                            {{ ucfirst($order->status) }}
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $order->created_at->format('M d, Y') }}</td>
+                                </tr>
                             @endforeach
                         @endforeach
                     </tbody>

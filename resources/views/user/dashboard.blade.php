@@ -16,7 +16,7 @@
         <div class="flex justify-between items-start">
             <div>
                 <h3 class="font-semibold">Order #{{ $currentOrder->id }}</h3>
-                <p class="text-gray-600">{{ count($currentOrder->items) }} items • ₹{{ number_format($currentOrder->total_amount) }}</p>
+                <p class="text-gray-600">{{ $currentOrder->orderItems->count() }} items • ₹{{ number_format($currentOrder->total_amount) }}</p>
                 <p class="text-sm text-gray-500">{{ $currentOrder->created_at->format('M d, Y h:i A') }}</p>
             </div>
             <div>
@@ -79,7 +79,7 @@
             <div class="flex justify-between items-start">
                 <div>
                     <h3 class="font-semibold">Order #{{ $order->id }}</h3>
-                    <p class="text-gray-600">{{ count($order->items) }} items • ₹{{ number_format($order->total_amount) }}</p>
+                    <p class="text-gray-600">{{ $order->orderItems->count() }} items • ₹{{ number_format($order->total_amount) }}</p>
                     <p class="text-sm text-gray-500">{{ $order->created_at->format('M d, Y h:i A') }}</p>
                 </div>
                 <div class="text-right">

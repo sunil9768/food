@@ -15,17 +15,20 @@ class Order extends Model
         'status',
         'payment_status',
         'payment_method',
-        'items',
         'notes'
     ];
 
     protected $casts = [
-        'items' => 'array',
         'total_amount' => 'decimal:2'
     ];
 
+    public function orderItems()
+    {
+        return $this->hasMany(OrderItem::class);
+    }
+
     public function getItemsCountAttribute()
     {
-        return count($this->items ?? []);
+        return $this->orderItems()->count();
     }
 }

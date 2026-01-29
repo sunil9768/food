@@ -55,7 +55,8 @@
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $order->created_at->format('M d, Y') }}</td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                            <button class="text-primary hover:text-orange-600 mr-3" onclick="viewOrder({{ $order->id }})">View</button>
+                            <a href="{{ route('admin.order.details', $order->id) }}" class="text-primary hover:text-orange-600 mr-3">View</a>
+                            <a href="{{ route('admin.order.invoice', $order->id) }}" class="text-blue-600 hover:text-blue-800 mr-3">Invoice</a>
                             @if($order->status != 'delivered' && $order->status != 'cancelled')
                             <button class="text-red-600 hover:text-red-800" onclick="cancelOrder({{ $order->id }})">Cancel</button>
                             @endif
@@ -120,7 +121,36 @@ function viewOrder(orderId) {
 }
 
 function cancelOrder(orderId) {
-    confirmDelete(`/admin/orders/${orderId}`, 'Cancel Order?', 'Are you sure you want to cancel this order?');
+    Swal.fire({
+        title: 'Cancel Order?',
+        text: 'Are you sure you want to cancel this order?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Yes, cancel it!'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            fetch(`/admin/orders/${orderId}/status`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                body: JSON.stringify({ status: 'cancelled' })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    Swal.fire('Cancelled!', 'Order has been cancelled.', 'success');
+                    location.reload();
+                }
+            })
+            .catch(error => {
+                Swal.fire('Error!', 'Failed to cancel order', 'error');
+            });
+        }
+    });
 }
 </script>
 @endsection

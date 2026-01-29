@@ -26,6 +26,7 @@
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Order ID</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Customer</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">My Items</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">My Total</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Date</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Actions</th>
@@ -41,24 +42,32 @@
                                     <div class="text-gray-400">{{ $order->customer_email }}</div>
                                 </div>
                             </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                @foreach($order->vendor_items as $item)
-                                    <div class="mb-1">{{ $item['name'] }} ({{ $item['quantity'] }}x)</div>
+                            <td class="px-6 py-4 text-sm text-gray-500">
+                                @foreach($order->orderItems as $item)
+                                    <div class="mb-1 flex justify-between">
+                                        <span>{{ $item->menuItem->name }}</span>
+                                        <span class="text-gray-400">{{ $item->quantity }}x ₹{{ $item->price }}</span>
+                                    </div>
                                 @endforeach
                             </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-green-600">
+                                ₹{{ number_format($order->orderItems->sum(function($item) { return $item->price * $item->quantity; }), 2) }}
+                            </td>
                             <td class="px-6 py-4 whitespace-nowrap">
-                                <select class="px-2 py-1 text-xs font-semibold rounded border" onchange="updateOrderStatus({{ $order->id }}, this.value)">
-                                    <option value="pending" {{ $order->status == 'pending' ? 'selected' : '' }}>Pending</option>
-                                    <option value="confirmed" {{ $order->status == 'confirmed' ? 'selected' : '' }}>Confirmed</option>
-                                    <option value="preparing" {{ $order->status == 'preparing' ? 'selected' : '' }}>Preparing</option>
-                                    <option value="ready" {{ $order->status == 'ready' ? 'selected' : '' }}>Ready</option>
-                                    <option value="delivered" {{ $order->status == 'delivered' ? 'selected' : '' }}>Delivered</option>
-                                    <option value="cancelled" {{ $order->status == 'cancelled' ? 'selected' : '' }}>Cancelled</option>
-                                </select>
+                                <span class="px-2 py-1 text-xs font-semibold rounded border
+                                    @if($order->status == 'pending') bg-yellow-100 text-yellow-800
+                                    @elseif($order->status == 'confirmed') bg-blue-100 text-blue-800
+                                    @elseif($order->status == 'preparing') bg-orange-100 text-orange-800
+                                    @elseif($order->status == 'ready') bg-purple-100 text-purple-800
+                                    @elseif($order->status == 'delivered') bg-green-100 text-green-800
+                                    @else bg-red-100 text-red-800 @endif">
+                                    {{ ucfirst($order->status) }}
+                                </span>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $order->created_at->format('M d, Y') }}</td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                <button class="text-orange-600 hover:text-orange-800" onclick="viewOrder({{ $order->id }})">View</button>
+                                <a href="{{ route('vendor.order.details', $order->id) }}" class="text-orange-600 hover:text-orange-800 mr-3">View</a>
+                                <a href="{{ route('vendor.order.invoice', $order->id) }}" class="text-blue-600 hover:text-blue-800">Invoice</a>
                             </td>
                         </tr>
                         @endforeach
@@ -88,36 +97,6 @@ $(document).ready(function() {
 function viewOrder(orderId) {
     // Add modal or redirect to view order details
     console.log('View order', orderId);
-}
-
-function updateOrderStatus(orderId, status) {
-    fetch(`/vendor/orders/${orderId}/status`, {
-        method: 'PUT',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRF-TOKEN': '{{ csrf_token() }}'
-        },
-        body: JSON.stringify({ status: status })
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            Swal.fire({
-                icon: 'success',
-                title: 'Updated!',
-                text: data.message,
-                timer: 1500,
-                showConfirmButton: false
-            });
-        }
-    })
-    .catch(error => {
-        Swal.fire({
-            icon: 'error',
-            title: 'Error!',
-            text: 'Failed to update order status'
-        });
-    });
 }
 </script>
 @endsection

@@ -58,13 +58,13 @@
         <div>
             <h3 class="text-lg font-semibold mb-4">Order Items</h3>
             <div class="space-y-3">
-                @foreach($order->items as $item)
+                @foreach($order->orderItems as $item)
                 <div class="flex justify-between items-center py-2 border-b">
                     <div>
-                        <h4 class="font-medium">{{ $item['name'] }}</h4>
-                        <p class="text-sm text-gray-600">₹{{ number_format($item['price']) }} x {{ $item['quantity'] }}</p>
+                        <h4 class="font-medium">{{ $item->menuItem->name }}</h4>
+                        <p class="text-sm text-gray-600">₹{{ number_format($item->price) }} x {{ $item->quantity }}</p>
                     </div>
-                    <div class="font-semibold">₹{{ number_format($item['price'] * $item['quantity']) }}</div>
+                    <div class="font-semibold">₹{{ number_format($item->price * $item->quantity) }}</div>
                 </div>
                 @endforeach
                 
@@ -106,8 +106,11 @@
     </div>
 
     <div class="mt-8 pt-6 border-t">
-        <a href="{{ route('user.orders') }}" class="text-curry hover:text-orange-600 font-semibold">
+        <a href="{{ route('user.orders') }}" class="text-curry hover:text-orange-600 font-semibold mr-6">
             ← Back to Orders
+        </a>
+        <a href="{{ route('user.order.invoice', $order->id) }}" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+            Download Invoice
         </a>
     </div>
 </div>

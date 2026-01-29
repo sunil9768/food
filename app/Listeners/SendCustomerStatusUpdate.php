@@ -10,6 +10,7 @@ class SendCustomerStatusUpdate
 {
     public function handle(OrderStatusUpdated $event): void
     {
-        Mail::to($event->order->customer_email)->send(new OrderStatusUpdate($event->order));
+        $order = $event->order->load('orderItems.menuItem');
+        Mail::to($order->customer_email)->send(new OrderStatusUpdate($order));
     }
 }

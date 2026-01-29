@@ -126,6 +126,13 @@
         });
     @endif
     
+    @if(session('clearCart'))
+        // Clear cart after successful order
+        localStorage.removeItem('cart');
+        cart = [];
+        updateCartCount();
+    @endif
+    
     @if(session('error'))
         Swal.fire({
             icon: 'error',
