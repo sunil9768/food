@@ -27,7 +27,20 @@ class FrontendController extends Controller
             ->withCount('menuItems')
             ->get();
             
-        return view('welcome', compact('popularItems', 'categories'));
+        // Get all restaurants/vendors with their menu items
+        $restaurants = User::role('vendor')
+            ->whereHas('menuItems', function($query) {
+                $query->where('is_active', true);
+            })
+            ->withCount(['menuItems' => function($query) {
+                $query->where('is_active', true);
+            }])
+            ->with(['menuItems' => function($query) {
+                $query->where('is_active', true)->take(3);
+            }])
+            ->get();
+            
+        return view('welcome', compact('popularItems', 'categories', 'restaurants'));
     }
     
     public function cart()
@@ -37,17 +50,13 @@ class FrontendController extends Controller
     
     public function menu()
     {
-        // Get all vendors who have active menu items
-        $vendors = User::role('vendor')
-            ->whereHas('menuItems', function($query) {
-                $query->where('is_active', true);
-            })
-            ->withCount(['menuItems' => function($query) {
-                $query->where('is_active', true);
-            }])
-            ->get();
+        // Get all active menu items from all vendors
+        $menuItems = MenuItem::where('is_active', true)
+            ->with(['category', 'vendor'])
+            ->orderBy('name')
+            ->paginate(25);
             
-        return view('frontend.menu', compact('vendors'));
+        return view('frontend.menu', compact('menuItems'));
     }
 
     public function vendorMenu($vendorId)
@@ -81,6 +90,18 @@ class FrontendController extends Controller
         return view('frontend.checkout', compact('cartItems', 'isLoggedIn'));
     }
     
+    public function categoryItems($categorySlug)
+    {
+        $category = Category::where('slug', $categorySlug)->firstOrFail();
+        
+        $menuItems = MenuItem::where('is_active', true)
+            ->where('category_id', $category->id)
+            ->with(['vendor'])
+            ->paginate(12);
+            
+        return view('frontend.category-items', compact('category', 'menuItems'));
+    }
+
     public function placeOrder(Request $request)
     {
         $isLoggedIn = Auth::check();

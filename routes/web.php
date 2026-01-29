@@ -9,6 +9,7 @@ use App\Http\Controllers\AuthController;
 
 Route::get('/', [FrontendController::class, 'index'])->name('home');
 Route::get('/menu', [FrontendController::class, 'menu'])->name('menu');
+Route::get('/category/{slug}', [FrontendController::class, 'categoryItems'])->name('category.items');
 Route::get('/vendor/{id}/menu', [FrontendController::class, 'vendorMenu'])->name('vendor.menu.view');
 Route::get('/cart', [FrontendController::class, 'cart'])->name('cart.view');
 Route::post('/checkout', [FrontendController::class, 'checkout'])->name('checkout');
