@@ -1,21 +1,64 @@
 {
-  "name": "Desi Delights - Food Delivery",
+  "name": "Desi Delights - Multi-Vendor Food Delivery",
   "short_name": "Desi Delights",
-  "description": "Multi-vendor food delivery platform",
+  "description": "Order authentic Indian cuisine from multiple restaurants. Fast delivery, fresh food delivered to your doorstep!",
   "start_url": "/",
+  "scope": "/",
   "display": "standalone",
+  "orientation": "portrait",
   "background_color": "#FF6B35",
   "theme_color": "#FF6B35",
+  "categories": ["food", "shopping", "lifestyle"],
+  "lang": "en",
+  "dir": "ltr",
   "icons": [
     {
-      "src": "/icon-192.png",
-      "sizes": "192x192",
-      "type": "image/png"
+      "src": "https://via.placeholder.com/72x72/FF6B35/FFFFFF?text=🍛",
+      "sizes": "72x72",
+      "type": "image/png",
+      "purpose": "any maskable"
     },
     {
-      "src": "/icon-512.png",
+      "src": "https://via.placeholder.com/96x96/FF6B35/FFFFFF?text=🍛",
+      "sizes": "96x96",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "https://via.placeholder.com/128x128/FF6B35/FFFFFF?text=🍛",
+      "sizes": "128x128",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "https://via.placeholder.com/144x144/FF6B35/FFFFFF?text=🍛",
+      "sizes": "144x144",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "https://via.placeholder.com/152x152/FF6B35/FFFFFF?text=🍛",
+      "sizes": "152x152",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "https://via.placeholder.com/192x192/FF6B35/FFFFFF?text=🍛",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "https://via.placeholder.com/384x384/FF6B35/FFFFFF?text=🍛",
+      "sizes": "384x384",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "https://via.placeholder.com/512x512/FF6B35/FFFFFF?text=🍛",
       "sizes": "512x512",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any maskable"
     }
   ]
 }
