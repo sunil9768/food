@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title', 'Desi Delights - Authentic Indian Food Delivery')</title>
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#FF6B35">
+    <link rel="apple-touch-icon" href="/icon-192.png">
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -67,6 +70,7 @@
                     @else
                         <a href="{{ route('login') }}" class="text-gray-700 hover:text-curry text-sm">Login</a>
                         <a href="{{ route('register') }}" class="bg-curry text-white px-3 py-2 rounded hover:bg-orange-600 text-sm">Register</a>
+                        <a href="{{ route('vendor.register') }}" class="bg-green-600 text-white px-3 py-2 rounded hover:bg-green-700 text-sm">Partner with Us</a>
                     @endauth
                 </div>
             </div>
@@ -98,6 +102,7 @@
                         <div class="border-t border-gray-200 pt-3 mt-3 space-y-2">
                             <a href="{{ route('login') }}" class="block text-gray-700 hover:text-curry">Login</a>
                             <a href="{{ route('register') }}" class="block bg-curry text-white px-4 py-2 rounded hover:bg-orange-600 text-center">Register</a>
+                            <a href="{{ route('vendor.register') }}" class="block bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 text-center">Partner with Us</a>
                         </div>
                     @endauth
                 </div>
@@ -219,5 +224,14 @@
     </script>
     
     @yield('scripts')
+    
+    <script>
+    // Register service worker for PWA
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/sw.js')
+            .then(registration => console.log('SW registered'))
+            .catch(error => console.log('SW registration failed'));
+    }
+    </script>
 </body>
 </html>

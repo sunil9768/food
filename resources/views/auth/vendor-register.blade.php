@@ -1,91 +1,89 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vendor Registration - Desi Delights</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <title>Vendor Registration - {{ config('app.name', 'Desi Delights') }}</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+    </style>
 </head>
-<body class="bg-gray-100">
+<body class="bg-gradient-to-br from-orange-50 to-red-100 min-h-screen">
     <div class="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
         <div class="max-w-md w-full space-y-8">
-            <div>
-                <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
-                    Vendor Registration
-                </h2>
-                <p class="mt-2 text-center text-sm text-gray-600">
-                    Join as a vendor and start selling your delicious food
-                </p>
+            <div class="text-center">
+                <h1 class="text-4xl font-bold text-orange-600 mb-2">🍛 Desi Delights</h1>
+                <h2 class="text-2xl font-semibold text-gray-900 mb-2">Join as Vendor!</h2>
+                <p class="text-gray-600">Start selling your delicious food today</p>
             </div>
-            <form class="mt-8 space-y-6" action="{{ route('vendor.register') }}" method="POST">
-                @csrf
-                <div class="rounded-md shadow-sm -space-y-px">
+            
+            <div class="bg-white rounded-2xl shadow-xl p-8">
+                <form method="POST" action="{{ route('vendor.register') }}" class="space-y-6">
+                    @csrf
+                    
                     <div>
-                        <label for="name" class="sr-only">Name</label>
-                        <input id="name" name="name" type="text" required 
-                               class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-orange-500 focus:border-orange-500 focus:z-10 sm:text-sm" 
-                               placeholder="Full name" value="{{ old('name') }}">
+                        <label for="name" class="block text-sm font-medium text-gray-700 mb-2">Full Name</label>
+                        <input id="name" type="text" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus
+                               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition duration-200 @error('name') border-red-500 @enderror">
                         @error('name')
-                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                            <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                         @enderror
                     </div>
+                    
                     <div>
-                        <label for="restaurant_name" class="sr-only">Restaurant Name</label>
-                        <input id="restaurant_name" name="restaurant_name" type="text" required 
-                               class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-orange-500 focus:border-orange-500 focus:z-10 sm:text-sm" 
-                               placeholder="Restaurant name" value="{{ old('restaurant_name') }}">
+                        <label for="restaurant_name" class="block text-sm font-medium text-gray-700 mb-2">Restaurant Name</label>
+                        <input id="restaurant_name" type="text" name="restaurant_name" value="{{ old('restaurant_name') }}" required
+                               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition duration-200 @error('restaurant_name') border-red-500 @enderror">
                         @error('restaurant_name')
-                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                            <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                         @enderror
                     </div>
+                    
                     <div>
-                        <label for="email" class="sr-only">Email address</label>
-                        <input id="email" name="email" type="email" required 
-                               class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-orange-500 focus:border-orange-500 focus:z-10 sm:text-sm" 
-                               placeholder="Email address" value="{{ old('email') }}">
+                        <label for="email" class="block text-sm font-medium text-gray-700 mb-2">Email Address</label>
+                        <input id="email" type="email" name="email" value="{{ old('email') }}" required autocomplete="email"
+                               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition duration-200 @error('email') border-red-500 @enderror">
                         @error('email')
-                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                            <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                         @enderror
                     </div>
+                    
                     <div>
-                        <label for="password" class="sr-only">Password</label>
-                        <input id="password" name="password" type="password" required 
-                               class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-orange-500 focus:border-orange-500 focus:z-10 sm:text-sm" 
-                               placeholder="Password">
+                        <label for="password" class="block text-sm font-medium text-gray-700 mb-2">Password</label>
+                        <input id="password" type="password" name="password" required autocomplete="new-password"
+                               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition duration-200 @error('password') border-red-500 @enderror">
                         @error('password')
-                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                            <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                         @enderror
                     </div>
+                    
                     <div>
-                        <label for="password_confirmation" class="sr-only">Confirm Password</label>
-                        <input id="password_confirmation" name="password_confirmation" type="password" required 
-                               class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-orange-500 focus:border-orange-500 focus:z-10 sm:text-sm" 
-                               placeholder="Confirm password">
+                        <label for="password_confirmation" class="block text-sm font-medium text-gray-700 mb-2">Confirm Password</label>
+                        <input id="password_confirmation" type="password" name="password_confirmation" required autocomplete="new-password"
+                               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition duration-200">
                     </div>
-                </div>
-
-                <div>
-                    <button type="submit" 
-                            class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-orange-600 hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500">
+                    
+                    <button type="submit" class="w-full bg-gradient-to-r from-orange-500 to-red-500 text-white py-3 px-4 rounded-lg font-medium hover:from-orange-600 hover:to-red-600 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 transform transition duration-200 hover:scale-105">
                         Register as Vendor
                     </button>
-                </div>
-
-                <div class="text-center">
-                    <p class="text-sm text-gray-600">
-                        Already have an account? 
-                        <a href="{{ route('login') }}" class="font-medium text-orange-600 hover:text-orange-500">
-                            Sign in
-                        </a>
+                </form>
+                
+                <div class="mt-6 text-center space-y-2">
+                    <p class="text-gray-600">Already have an account? 
+                        <a href="{{ route('login') }}" class="text-orange-600 hover:text-orange-500 font-medium">Sign in here</a>
                     </p>
-                    <p class="text-sm text-gray-600 mt-2">
-                        Want to register as customer? 
-                        <a href="{{ route('register') }}" class="font-medium text-orange-600 hover:text-orange-500">
-                            Customer Registration
-                        </a>
+                    <p class="text-gray-600">Want to register as customer? 
+                        <a href="{{ route('register') }}" class="text-orange-600 hover:text-orange-500 font-medium">Customer Registration</a>
                     </p>
                 </div>
-            </form>
+            </div>
+            
+            <div class="text-center">
+                <a href="{{ url('/') }}" class="text-gray-500 hover:text-gray-700 text-sm font-medium">← Back to Home</a>
+            </div>
         </div>
     </div>
 </body>

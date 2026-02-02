@@ -25,7 +25,100 @@
         </div>
     </section>
 
-      <!-- Categories Section -->
+    <!-- Restaurant Marketing Section -->
+    <section class="py-16 bg-gradient-to-r from-green-50 to-blue-50">
+        <div class="container mx-auto px-4">
+            <div class="max-w-4xl mx-auto text-center">
+                <h2 class="text-4xl font-bold text-gray-800 mb-6">🍴 Partner with Desi Delights</h2>
+                <p class="text-xl text-gray-600 mb-8">Join thousands of restaurants growing their business with us</p>
+                
+                <div class="grid md:grid-cols-3 gap-8 mb-12">
+                    <div class="bg-white rounded-xl p-6 shadow-lg">
+                        <div class="text-4xl mb-4">🎆</div>
+                        <h3 class="text-xl font-bold text-gray-800 mb-2">100% FREE Registration</h3>
+                        <p class="text-gray-600">No setup fees, no monthly charges. Start selling immediately!</p>
+                    </div>
+                    <div class="bg-white rounded-xl p-6 shadow-lg">
+                        <div class="text-4xl mb-4">💰</div>
+                        <h3 class="text-xl font-bold text-gray-800 mb-2">Increase Your Revenue</h3>
+                        <p class="text-gray-600">Reach more customers and boost your sales by up to 40%</p>
+                    </div>
+                    <div class="bg-white rounded-xl p-6 shadow-lg">
+                        <div class="text-4xl mb-4">🚚</div>
+                        <h3 class="text-xl font-bold text-gray-800 mb-2">Easy Order Management</h3>
+                        <p class="text-gray-600">Simple dashboard to manage orders, menu, and track earnings</p>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-2xl p-8 shadow-xl">
+                    <h3 class="text-2xl font-bold text-gray-800 mb-4">Ready to Get Started?</h3>
+                    <p class="text-gray-600 mb-6">Register your restaurant today and start listing your delicious items on our platform - completely FREE!</p>
+                    <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                        <a href="{{ route('vendor.register') }}" class="bg-gradient-to-r from-green-500 to-blue-500 text-white px-8 py-3 rounded-full hover:from-green-600 hover:to-blue-600 transition text-lg font-semibold">
+                            Register Your Restaurant FREE
+                        </a>
+                        <a href="#contact" class="border-2 border-gray-300 text-gray-700 px-8 py-3 rounded-full hover:border-gray-400 transition text-lg font-semibold">
+                            Learn More
+                        </a>
+                    </div>
+                    <p class="text-sm text-gray-500 mt-4">✨ Join 10+ restaurants already partnered with us</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    
+ <!-- All Restaurants -->
+    <section class="py-16 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <h2 class="text-4xl font-bold text-center text-gray-800 mb-12">All Restaurants</h2>
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                @forelse($restaurants as $restaurant)
+                <div class="bg-white rounded-xl shadow-lg hover:shadow-xl transition overflow-hidden">
+                    @if($restaurant->banner_image)
+                        <img src="{{ asset('storage/' . $restaurant->banner_image) }}" alt="{{ $restaurant->restaurant_name ?: $restaurant->name }}" class="w-full h-48 object-cover">
+                    @else
+                        <div class="w-full h-48 bg-gradient-to-r from-orange-400 to-red-500 flex items-center justify-center">
+                            <span class="text-white text-4xl">🍛</span>
+                        </div>
+                    @endif
+                    
+                    <div class="p-6">
+                        <h3 class="text-2xl font-bold text-gray-800 mb-2">{{ $restaurant->restaurant_name ?: $restaurant->name }}</h3>
+                        <div class="flex items-center text-gray-600 mb-4">
+                            <span class="mr-4">⭐ 4.5</span>
+                            <span class="mr-4">🚚 25-30 mins</span>
+                            <span>🍽️ {{ $restaurant->menu_items_count }} items</span>
+                        </div>
+                        
+                        @if($restaurant->menuItems->count() > 0)
+                        <div class="mb-4">
+                            <h4 class="text-sm font-semibold text-gray-700 mb-2">Popular Items:</h4>
+                            <div class="flex flex-wrap gap-1">
+                                @foreach($restaurant->menuItems->take(3) as $item)
+                                <span class="bg-orange-100 text-orange-800 text-xs px-2 py-1 rounded-full">{{ $item->name }}</span>
+                                @endforeach
+                            </div>
+                        </div>
+                        @endif
+                        
+                        <div class="flex justify-between items-center">
+                            <span class="text-green-600 font-semibold">Open Now</span>
+                            <a href="{{ route('vendor.menu.view', $restaurant->id) }}" class="bg-orange-500 text-white px-4 py-2 rounded-full hover:bg-orange-600 transition">
+                                View Menu
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                @empty
+                <div class="col-span-3 text-center py-8">
+                    <p class="text-gray-500 text-lg">No restaurants available at the moment.</p>
+                </div>
+                @endforelse
+            </div>
+        </div>
+    </section>
+  <!-- Categories Section -->
     <section class="py-16 bg-white">
         <div class="container mx-auto px-4">
             <h2 class="text-4xl font-bold text-center text-gray-800 mb-12">Browse by Category</h2>
@@ -87,57 +180,6 @@
             </div>
         </div>
     </section>
- <!-- All Restaurants -->
-    <section class="py-16 bg-gray-50">
-        <div class="container mx-auto px-4">
-            <h2 class="text-4xl font-bold text-center text-gray-800 mb-12">All Restaurants</h2>
-            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                @forelse($restaurants as $restaurant)
-                <div class="bg-white rounded-xl shadow-lg hover:shadow-xl transition overflow-hidden">
-                    @if($restaurant->banner_image)
-                        <img src="{{ asset('storage/' . $restaurant->banner_image) }}" alt="{{ $restaurant->restaurant_name ?: $restaurant->name }}" class="w-full h-48 object-cover">
-                    @else
-                        <div class="w-full h-48 bg-gradient-to-r from-orange-400 to-red-500 flex items-center justify-center">
-                            <span class="text-white text-4xl">🍛</span>
-                        </div>
-                    @endif
-                    
-                    <div class="p-6">
-                        <h3 class="text-2xl font-bold text-gray-800 mb-2">{{ $restaurant->restaurant_name ?: $restaurant->name }}</h3>
-                        <div class="flex items-center text-gray-600 mb-4">
-                            <span class="mr-4">⭐ 4.5</span>
-                            <span class="mr-4">🚚 25-30 mins</span>
-                            <span>🍽️ {{ $restaurant->menu_items_count }} items</span>
-                        </div>
-                        
-                        @if($restaurant->menuItems->count() > 0)
-                        <div class="mb-4">
-                            <h4 class="text-sm font-semibold text-gray-700 mb-2">Popular Items:</h4>
-                            <div class="flex flex-wrap gap-1">
-                                @foreach($restaurant->menuItems->take(3) as $item)
-                                <span class="bg-orange-100 text-orange-800 text-xs px-2 py-1 rounded-full">{{ $item->name }}</span>
-                                @endforeach
-                            </div>
-                        </div>
-                        @endif
-                        
-                        <div class="flex justify-between items-center">
-                            <span class="text-green-600 font-semibold">Open Now</span>
-                            <a href="{{ route('vendor.menu.view', $restaurant->id) }}" class="bg-orange-500 text-white px-4 py-2 rounded-full hover:bg-orange-600 transition">
-                                View Menu
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                @empty
-                <div class="col-span-3 text-center py-8">
-                    <p class="text-gray-500 text-lg">No restaurants available at the moment.</p>
-                </div>
-                @endforelse
-            </div>
-        </div>
-    </section>
-
   
 
     <!-- Popular Dishes -->
