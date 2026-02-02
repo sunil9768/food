@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Generate PWA Icons</title>
+    <style>
+        .icon { 
+            background: linear-gradient(135deg, #FF6B35, #FF9933);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: bold;
+            border-radius: 20%;
+            margin: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h2>Right-click and save each icon:</h2>
+    
+    <canvas id="icon-16" class="icon" width="16" height="16"></canvas>
+    <canvas id="icon-32" class="icon" width="32" height="32"></canvas>
+    <canvas id="icon-72" class="icon" width="72" height="72"></canvas>
+    <canvas id="icon-96" class="icon" width="96" height="96"></canvas>
+    <canvas id="icon-128" class="icon" width="128" height="128"></canvas>
+    <canvas id="icon-144" class="icon" width="144" height="144"></canvas>
+    <canvas id="icon-152" class="icon" width="152" height="152"></canvas>
+    <canvas id="icon-192" class="icon" width="192" height="192"></canvas>
+    <canvas id="icon-384" class="icon" width="384" height="384"></canvas>
+    <canvas id="icon-512" class="icon" width="512" height="512"></canvas>
+
+    <script>
+        const sizes = [16, 32, 72, 96, 128, 144, 152, 192, 384, 512];
+        
+        sizes.forEach(size => {
+            const canvas = document.getElementById(`icon-${size}`);
+            const ctx = canvas.getContext('2d');
+            
+            // Create gradient
+            const gradient = ctx.createLinearGradient(0, 0, size, size);
+            gradient.addColorStop(0, '#FF6B35');
+            gradient.addColorStop(1, '#FF9933');
+            
+            // Fill background
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, size, size);
+            
+            // Add emoji
+            ctx.fillStyle = 'white';
+            ctx.font = `${size * 0.6}px Arial`;
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText('🍛', size/2, size/2);
+        });
+    </script>
+</body>
+</html>
