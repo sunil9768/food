@@ -26,12 +26,20 @@
             <div class="flex justify-between items-center">
                 <a href="{{ route('home') }}" class="text-xl md:text-2xl font-bold text-curry">🍛 Desi Delights</a>
                 
-                <!-- Mobile menu button -->
-                <button id="mobile-menu-btn" class="md:hidden text-gray-700 hover:text-curry">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-                    </svg>
-                </button>
+                <!-- Mobile cart and menu buttons -->
+                <div class="flex items-center space-x-3 md:hidden">
+                    <a href="{{ route('cart.view') }}" class="text-gray-700 hover:text-curry relative p-2">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-1.5 6M7 13l-1.5-6m0 0h15M17 21a2 2 0 100-4 2 2 0 000 4zM9 21a2 2 0 100-4 2 2 0 000 4z"></path>
+                        </svg>
+                        <span id="cartCountMobileHeader" class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center hidden">0</span>
+                    </a>
+                    <button id="mobile-menu-btn" class="text-gray-700 hover:text-curry p-2">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
+                    </button>
+                </div>
                 
                 <!-- Desktop navigation -->
                 <nav class="hidden md:flex space-x-6">
@@ -132,19 +140,19 @@
         const count = cart.reduce((total, item) => total + item.quantity, 0);
         const cartCount = document.getElementById('cartCount');
         const cartCountMobile = document.getElementById('cartCountMobile');
+        const cartCountMobileHeader = document.getElementById('cartCountMobileHeader');
         
         if (count > 0) {
-            if (cartCount) {
-                cartCount.textContent = count;
-                cartCount.classList.remove('hidden');
-            }
-            if (cartCountMobile) {
-                cartCountMobile.textContent = count;
-                cartCountMobile.classList.remove('hidden');
-            }
+            [cartCount, cartCountMobile, cartCountMobileHeader].forEach(element => {
+                if (element) {
+                    element.textContent = count;
+                    element.classList.remove('hidden');
+                }
+            });
         } else {
-            if (cartCount) cartCount.classList.add('hidden');
-            if (cartCountMobile) cartCountMobile.classList.add('hidden');
+            [cartCount, cartCountMobile, cartCountMobileHeader].forEach(element => {
+                if (element) element.classList.add('hidden');
+            });
         }
     }
     
