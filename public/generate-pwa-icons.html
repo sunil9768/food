@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Generate PWA Icons</title>
+</head>
+<body>
+    <h2>PWA Icon Generator</h2>
+    <p>Right-click each canvas and "Save image as" with the filename shown:</p>
+    
+    <div id="icons"></div>
+
+    <script>
+        const sizes = [48, 72, 96, 144, 192, 512];
+        const iconsDiv = document.getElementById('icons');
+        
+        sizes.forEach(size => {
+            const canvas = document.createElement('canvas');
+            canvas.width = size;
+            canvas.height = size;
+            canvas.style.margin = '10px';
+            canvas.style.border = '1px solid #ccc';
+            
+            const ctx = canvas.getContext('2d');
+            
+            // Create gradient background
+            const gradient = ctx.createLinearGradient(0, 0, size, size);
+            gradient.addColorStop(0, '#FF6B35');
+            gradient.addColorStop(1, '#FF9933');
+            
+            // Fill background
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, size, size);
+            
+            // Add text/emoji
+            ctx.fillStyle = 'white';
+            ctx.font = `bold ${size * 0.5}px Arial`;
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText('🍛', size/2, size/2);
+            
+            // Add label
+            const label = document.createElement('p');
+            label.textContent = `android-launchericon-${size}-${size}.png`;
+            label.style.textAlign = 'center';
+            label.style.margin = '5px';
+            
+            const container = document.createElement('div');
+            container.style.display = 'inline-block';
+            container.appendChild(canvas);
+            container.appendChild(label);
+            
+            iconsDiv.appendChild(container);
+        });
+    </script>
+</body>
+</html>
