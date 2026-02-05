@@ -273,9 +273,17 @@
         <div class="container mx-auto px-4 text-center">
             <h2 class="text-4xl font-bold mb-6">Hungry? Order Now!</h2>
             <p class="text-xl mb-8">Get your favorite Indian dishes delivered hot and fresh in 30 minutes</p>
-            <button class="bg-white text-curry px-8 py-4 rounded-full text-lg font-semibold hover:bg-gray-100 transition shadow-lg">
-                Start Your Order
-            </button>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                <button class="bg-white text-curry px-8 py-4 rounded-full text-lg font-semibold hover:bg-gray-100 transition shadow-lg">
+                    Start Your Order
+                </button>
+                <a href="http://food.arunil.in/public/food.apk" class="bg-green-600 text-white px-6 py-3 rounded-full hover:bg-green-700 transition text-lg font-semibold flex items-center gap-2" download>
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+                    </svg>
+                    Download APK
+                </a>
+            </div>
         </div>
     </section>
 @endsection
