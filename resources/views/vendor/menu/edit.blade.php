@@ -64,7 +64,7 @@
                     <label for="image" class="block text-sm font-medium text-gray-700">Image</label>
                     @if($menuItem->image)
                         <div class="mb-2">
-                            <img src="{{ asset('storage/' . $menuItem->image) }}" alt="{{ $menuItem->name }}" class="h-32 w-32 object-cover rounded-lg">
+                            <img src="@storageAsset($menuItem->image)" alt="{{ $menuItem->name }}" class="h-32 w-32 object-cover rounded-lg">
                         </div>
                     @endif
                     <input type="file" name="image" id="image" accept="image/*"

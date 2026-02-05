@@ -76,7 +76,7 @@
                 @forelse($restaurants as $restaurant)
                 <div class="bg-white rounded-xl shadow-lg hover:shadow-xl transition overflow-hidden">
                     @if($restaurant->banner_image)
-                        <img src="{{ asset('storage/' . $restaurant->banner_image) }}" alt="{{ $restaurant->restaurant_name ?: $restaurant->name }}" class="w-full h-48 object-cover">
+                        <img src="@storageAsset($restaurant->banner_image)" alt="{{ $restaurant->restaurant_name ?: $restaurant->name }}" class="w-full h-48 object-cover">
                     @else
                         <div class="w-full h-48 bg-gradient-to-r from-orange-400 to-red-500 flex items-center justify-center">
                             <span class="text-white text-4xl">🍛</span>
@@ -190,7 +190,7 @@
                 @forelse($popularItems as $item)
                 <div class="bg-orange-50 rounded-xl p-6 shadow-lg hover:shadow-xl transition">
                     @if($item->image)
-                        <img src="{{ asset('storage/' . $item->image) }}" alt="{{ $item->name }}" class="w-full h-48 object-cover rounded-lg mb-4">
+                        <img src="@storageAsset($item->image)" alt="{{ $item->name }}" class="w-full h-48 object-cover rounded-lg mb-4">
                     @else
                         <div class="w-full h-48 bg-gray-200 rounded-lg mb-4 flex items-center justify-center">
                             <span class="text-gray-400 text-2xl">🍽️</span>

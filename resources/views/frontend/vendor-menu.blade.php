@@ -6,7 +6,7 @@
     <!-- Vendor Header -->
     <section class="relative">
         @if($vendor->banner_image)
-            <div class="h-48 md:h-64 bg-cover bg-center" style="background-image: url('{{ asset('storage/' . $vendor->banner_image) }}')"></div>
+            <div class="h-48 md:h-64 bg-cover bg-center" style="background-image: url('@storageAsset($vendor->banner_image)')"></div>
             <div class="absolute inset-0 bg-black bg-opacity-50"></div>
         @else
             <div class="h-48 md:h-64 bg-gradient-to-r from-orange-500 to-red-500"></div>
@@ -112,7 +112,7 @@
                                     @foreach($items as $item)
                                         <div class="menu-item bg-white rounded-xl p-4 shadow-lg hover:shadow-xl transition" data-price="{{ $item->price }}">
                                             @if($item->image)
-                                                <img src="{{ asset('storage/' . $item->image) }}" alt="{{ $item->name }}" class="w-full h-32 sm:h-40 object-cover rounded-lg mb-3">
+                                                <img src="@storageAsset($item->image)" alt="{{ $item->name }}" class="w-full h-32 sm:h-40 object-cover rounded-lg mb-3">
                                             @else
                                                 <div class="w-full h-32 sm:h-40 bg-gray-200 rounded-lg mb-3 flex items-center justify-center">
                                                     <span class="text-gray-400 text-xl">🍽️</span>

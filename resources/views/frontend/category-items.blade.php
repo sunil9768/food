@@ -19,7 +19,7 @@
                 @forelse($menuItems as $item)
                 <div class="bg-white rounded-xl p-4 shadow-lg hover:shadow-xl transition">
                     @if($item->image)
-                        <img src="{{ asset('storage/' . $item->image) }}" alt="{{ $item->name }}" class="w-full h-40 object-cover rounded-lg mb-3">
+                        <img src="@storageAsset($item->image)" alt="{{ $item->name }}" class="w-full h-40 object-cover rounded-lg mb-3">
                     @else
                         <div class="w-full h-40 bg-gray-200 rounded-lg mb-3 flex items-center justify-center">
                             <span class="text-gray-400 text-xl">🍽️</span>

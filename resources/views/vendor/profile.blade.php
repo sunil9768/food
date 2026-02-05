@@ -46,7 +46,7 @@
                     
                     @if($vendor->banner_image)
                         <div class="mb-4">
-                            <img src="{{ asset('storage/' . $vendor->banner_image) }}" alt="Restaurant Banner" class="w-full h-32 object-cover rounded-lg">
+                            <img src="@storageAsset($vendor->banner_image)" alt="Restaurant Banner" class="w-full h-32 object-cover rounded-lg">
                         </div>
                     @endif
                     

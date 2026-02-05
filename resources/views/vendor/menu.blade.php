@@ -31,7 +31,7 @@
                         @foreach($menuItems as $item)
                             <tr>
                                 <td class="px-6 py-4 whitespace-nowrap">
-                                    <img class="h-16 w-16 rounded-lg object-cover" src="{{ asset('storage/' . $item->image) }}" alt="{{ $item->name }}">
+                                    <img class="h-16 w-16 rounded-lg object-cover" src="@storageAsset($item->image)" alt="{{ $item->name }}">
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="text-sm font-medium text-gray-900">{{ $item->name }}</div>
