@@ -132,12 +132,14 @@ function proceedToCheckout() {
         return;
     }
     
-    // Create form and submit to checkout
+    // Get CSRF token from meta tag
+    const token = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '{{ csrf_token() }}';
+    
     const form = document.createElement('form');
     form.method = 'POST';
     form.action = '{{ route('checkout') }}';
     form.innerHTML = `
-        <input type="hidden" name="_token" value="{{ csrf_token() }}">
+        <input type="hidden" name="_token" value="${token}">
         <input type="hidden" name="cart" value='${JSON.stringify(cart)}'>
     `;
     document.body.appendChild(form);

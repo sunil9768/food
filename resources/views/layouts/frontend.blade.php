@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="description" content="Order authentic Indian cuisine from multiple restaurants. Fast delivery, fresh food delivered to your doorstep!">
     <title>@yield('title', 'Desi Delights - Authentic Indian Food Delivery')</title>
     <link rel="manifest" href="https://food.arunil.in/public/manifest.json">
@@ -225,6 +226,16 @@
             }
         });
     }
+    
+    // Refresh CSRF token periodically
+    setInterval(() => {
+        fetch('/csrf-token')
+            .then(response => response.json())
+            .then(data => {
+                document.querySelector('meta[name="csrf-token"]').setAttribute('content', data.csrf_token);
+            })
+            .catch(() => {});
+    }, 300000); // Refresh every 5 minutes
     
     function addToCart(id, name, price) {
         const existingItem = cart.find(item => item.id === id);
