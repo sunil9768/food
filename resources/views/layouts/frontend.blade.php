@@ -5,16 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Order authentic Indian cuisine from multiple restaurants. Fast delivery, fresh food delivered to your doorstep!">
     <title>@yield('title', 'Desi Delights - Authentic Indian Food Delivery')</title>
-    <link rel="manifest" href="/manifest.json">
+    <link rel="manifest" href="https://food.arunil.in/public/manifest.json">
     <meta name="theme-color" content="#FF6B35">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="apple-mobile-web-app-title" content="Desi Delights">
-    <link rel="apple-touch-icon" href="/icon-192.png">
-    <link rel="apple-touch-icon" sizes="152x152" href="/icon-152.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="/icon-192.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="/icon-32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/icon-16.png">
+    <link rel="apple-touch-icon" href="https://food.arunil.in/public/android/android-launchericon-144-144.png">
+    <link rel="apple-touch-icon" sizes="48x48" href="https://food.arunil.in/public/android/android-launchericon-48-48.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="https://food.arunil.in/public/android/android-launchericon-72-72.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="https://food.arunil.in/public/android/android-launchericon-96-96.png">
+    <link rel="icon" type="image/png" sizes="144x144" href="https://food.arunil.in/public/android/android-launchericon-144-144.png">
+     <link rel="icon" type="image/png" sizes="512x512" href="https://food.arunil.in/public/android/android-launchericon-512-512.png">
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -236,7 +237,7 @@
     <script>
     // Register service worker for PWA
     if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('/sw.js')
+        navigator.serviceWorker.register('https://food.arunil.in/public/sw.js')
             .then(registration => console.log('SW registered'))
             .catch(error => console.log('SW registration failed'));
     }
