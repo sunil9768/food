@@ -30,7 +30,7 @@
                     <tr>
                         <td class="px-6 py-4 whitespace-nowrap">
                             @if($item->image)
-                                <img class="h-10 w-10 rounded-full object-cover" src="{{ asset('storage/' . $item->image) }}" alt="{{ $item->name }}">
+                                <img class="h-10 w-10 rounded-full object-cover" src="@storageAsset($item->image)" alt="{{ $item->name }}">
                             @else
                                 <div class="h-10 w-10 rounded-full bg-gray-200 flex items-center justify-center">
                                     <span class="text-gray-400 text-xs">No Image</span>
