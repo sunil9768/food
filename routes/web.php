@@ -12,6 +12,9 @@ Route::get('/menu', [FrontendController::class, 'menu'])->name('menu');
 Route::get('/category/{slug}', [FrontendController::class, 'categoryItems'])->name('category.items');
 Route::get('/vendor/{id}/menu', [FrontendController::class, 'vendorMenu'])->name('vendor.menu.view');
 Route::get('/cart', [FrontendController::class, 'cart'])->name('cart.view');
+Route::get('/csrf-token', function () {
+    return response()->json(['csrf_token' => csrf_token()]);
+});
 Route::post('/checkout', [FrontendController::class, 'checkout'])->name('checkout');
 Route::post('/place-order', [FrontendController::class, 'placeOrder'])->name('place.order');
 
@@ -76,6 +79,5 @@ Route::middleware(['auth', 'role:vendor'])->prefix('vendor')->group(function () 
 });
 
 Auth::routes(['register' => false, 'login' => false]);
-
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+ 
  
