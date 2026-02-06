@@ -8,6 +8,7 @@ use App\Models\Category;
 use App\Models\User;
 use App\Models\OrderItem;
 use App\Models\Order;
+use App\Models\Setting;
 use App\Events\OrderPlaced;
 use App\Events\UserRegistered;
 use Illuminate\Support\Str;
@@ -41,12 +42,35 @@ class FrontendController extends Controller
             }])
             ->get();
             
-        return view('welcome', compact('popularItems', 'categories', 'restaurants'));
+        // Get settings for dynamic content
+        $settings = [
+            'site_name' => Setting::get('site_name', 'Desi Delights'),
+            'site_tagline' => Setting::get('site_tagline', 'Multi-Vendor Food Delivery Platform'),
+            'hero_title' => Setting::get('hero_title', '🏪 Grow Your Restaurant Business Online!'),
+            'hero_subtitle' => Setting::get('hero_subtitle', 'Join Desi Delights platform and reach thousands of hungry customers. Register your restaurant for FREE and start earning more today!'),
+            'partner_section_title' => Setting::get('partner_section_title', '🍴 Partner with Desi Delights'),
+            'partner_section_subtitle' => Setting::get('partner_section_subtitle', 'Join thousands of restaurants growing their business with us'),
+            'contact_phone' => Setting::get('contact_phone', '+91 98765 43210'),
+            'contact_email' => Setting::get('contact_email', 'orders@desidelights.com'),
+            'total_partners' => Setting::get('total_partners', '10+'),
+            'opening_time' => Setting::get('opening_time', '11:00'),
+            'closing_time' => Setting::get('closing_time', '23:00'),
+            'free_delivery_above' => Setting::get('free_delivery_above', '299')
+        ];
+            
+        return view('welcome', compact('popularItems', 'categories', 'restaurants', 'settings'));
     }
     
     public function cart()
     {
-        return view('frontend.cart');
+        $settings = [
+            'contact_phone' => Setting::get('contact_phone', '+91 98765 43210'),
+            'contact_email' => Setting::get('contact_email', 'orders@desidelights.com'),
+            'opening_time' => Setting::get('opening_time', '11:00'),
+            'closing_time' => Setting::get('closing_time', '23:00'),
+            'free_delivery_above' => Setting::get('free_delivery_above', '299')
+        ];
+        return view('frontend.cart', compact('settings'));
     }
     
     public function menu()
@@ -57,7 +81,15 @@ class FrontendController extends Controller
             ->orderBy('name')
             ->paginate(25);
             
-        return view('frontend.menu', compact('menuItems'));
+        $settings = [
+            'contact_phone' => Setting::get('contact_phone', '+91 98765 43210'),
+            'contact_email' => Setting::get('contact_email', 'orders@desidelights.com'),
+            'opening_time' => Setting::get('opening_time', '11:00'),
+            'closing_time' => Setting::get('closing_time', '23:00'),
+            'free_delivery_above' => Setting::get('free_delivery_above', '299')
+        ];
+            
+        return view('frontend.menu', compact('menuItems', 'settings'));
     }
 
     public function vendorMenu($vendorId)
@@ -68,7 +100,15 @@ class FrontendController extends Controller
             }])
             ->findOrFail($vendorId);
             
-        return view('frontend.vendor-menu', compact('vendor'));
+        $settings = [
+            'contact_phone' => Setting::get('contact_phone', '+91 98765 43210'),
+            'contact_email' => Setting::get('contact_email', 'orders@desidelights.com'),
+            'opening_time' => Setting::get('opening_time', '11:00'),
+            'closing_time' => Setting::get('closing_time', '23:00'),
+            'free_delivery_above' => Setting::get('free_delivery_above', '299')
+        ];
+            
+        return view('frontend.vendor-menu', compact('vendor', 'settings'));
     }
     
     public function checkout(Request $request)
