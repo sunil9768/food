@@ -6,6 +6,9 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Login - {{ config('app.name', 'Desi Delights') }}</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    @if($recaptchaEnabled && $recaptchaSiteKey)
+        <script src="https://www.google.com/recaptcha/api.js?render={{ $recaptchaSiteKey }}"></script>
+    @endif
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Inter', sans-serif; }
@@ -53,7 +56,11 @@
                         @endif
                     </div>
                     
-                    <button type="submit" class="w-full bg-gradient-to-r from-orange-500 to-red-500 text-white py-3 px-4 rounded-lg font-medium hover:from-orange-600 hover:to-red-600 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 transform transition duration-200 hover:scale-105">
+                    @error('recaptcha')
+                        <p class="mb-4 text-sm text-red-600">{{ $message }}</p>
+                    @enderror
+                    
+                    <button type="submit" id="loginBtn" class="w-full bg-gradient-to-r from-orange-500 to-red-500 text-white py-3 px-4 rounded-lg font-medium hover:from-orange-600 hover:to-red-600 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 transform transition duration-200 hover:scale-105">
                         Sign In
                     </button>
                 </form>
@@ -73,5 +80,24 @@
             </div>
         </div>
     </div>
+    
+    @if($recaptchaEnabled && $recaptchaSiteKey)
+    <script>
+        grecaptcha.ready(function() {
+            document.getElementById('loginBtn').addEventListener('click', function(e) {
+                e.preventDefault();
+                grecaptcha.execute('{{ $recaptchaSiteKey }}', {action: 'login'}).then(function(token) {
+                    const form = document.querySelector('form');
+                    const input = document.createElement('input');
+                    input.type = 'hidden';
+                    input.name = 'g-recaptcha-response';
+                    input.value = token;
+                    form.appendChild(input);
+                    form.submit();
+                });
+            });
+        });
+    </script>
+    @endif
 </body>
 </html>

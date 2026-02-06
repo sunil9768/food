@@ -189,13 +189,13 @@
                 </div>
                 <div>
                     <h4 class="font-bold mb-4">Contact Info</h4>
-                    <p class="text-gray-400">📞 +91 98765 43210</p>
-                    <p class="text-gray-400">📧 orders@desidelights.com</p>
+                    <p class="text-gray-400">📞 {{ $settings['contact_phone'] ?? '+91 98765 43210' }}</p>
+                    <p class="text-gray-400">📧 {{ $settings['contact_email'] ?? 'orders@desidelights.com' }}</p>
                 </div>
                 <div>
                     <h4 class="font-bold mb-4">Delivery Hours</h4>
-                    <p class="text-gray-400">Mon-Sun: 11:00 AM - 11:00 PM</p>
-                    <p class="text-gray-400">Free delivery on orders above ₹299</p>
+                    <p class="text-gray-400">Mon-Sun: {{ date('g:i A', strtotime($settings['opening_time'] ?? '11:00')) }} - {{ date('g:i A', strtotime($settings['closing_time'] ?? '23:00')) }}</p>
+                    <p class="text-gray-400">Free delivery on orders above ₹{{ $settings['free_delivery_above'] ?? '299' }}</p>
                 </div>
             </div>
             <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">

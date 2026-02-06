@@ -15,6 +15,41 @@
     <form action="{{ route('admin.settings.update') }}" method="POST">
         @csrf
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <!-- Homepage Settings -->
+            <div class="bg-white rounded-lg shadow p-6">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">Homepage Settings</h3>
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Site Name</label>
+                        <input type="text" name="site_name" value="{{ $settings['site_name'] ?? 'Desi Delights' }}" class="w-full border rounded px-3 py-2">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Site Tagline</label>
+                        <input type="text" name="site_tagline" value="{{ $settings['site_tagline'] ?? 'Multi-Vendor Food Delivery Platform' }}" class="w-full border rounded px-3 py-2">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Hero Title</label>
+                        <input type="text" name="hero_title" value="{{ $settings['hero_title'] ?? '🏪 Grow Your Restaurant<br>Business Online!' }}" class="w-full border rounded px-3 py-2">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Hero Subtitle</label>
+                        <textarea name="hero_subtitle" class="w-full border rounded px-3 py-2 h-20">{{ $settings['hero_subtitle'] ?? 'Join Desi Delights platform and reach thousands of hungry customers. Register your restaurant for FREE and start earning more today!' }}</textarea>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Partner Section Title</label>
+                        <input type="text" name="partner_section_title" value="{{ $settings['partner_section_title'] ?? '🍴 Partner with Desi Delights' }}" class="w-full border rounded px-3 py-2">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Partner Section Subtitle</label>
+                        <input type="text" name="partner_section_subtitle" value="{{ $settings['partner_section_subtitle'] ?? 'Join thousands of restaurants growing their business with us' }}" class="w-full border rounded px-3 py-2">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Total Partners Count</label>
+                        <input type="text" name="total_partners" value="{{ $settings['total_partners'] ?? '10+' }}" class="w-full border rounded px-3 py-2">
+                    </div>
+                </div>
+            </div>
+
             <!-- Restaurant Settings -->
             <div class="bg-white rounded-lg shadow p-6">
                 <h3 class="text-lg font-semibold text-gray-800 mb-4">Restaurant Settings</h3>
@@ -28,8 +63,16 @@
                         <input type="text" name="restaurant_phone" value="{{ $settings['restaurant_phone'] ?? '+91 98765 43210' }}" class="w-full border rounded px-3 py-2">
                     </div>
                     <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Contact Phone (Footer)</label>
+                        <input type="text" name="contact_phone" value="{{ $settings['contact_phone'] ?? '+91 98765 43210' }}" class="w-full border rounded px-3 py-2">
+                    </div>
+                    <div>
                         <label class="block text-sm font-medium text-gray-700 mb-2">Email</label>
                         <input type="email" name="restaurant_email" value="{{ $settings['restaurant_email'] ?? 'orders@desidelights.com' }}" class="w-full border rounded px-3 py-2">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Contact Email (Footer)</label>
+                        <input type="email" name="contact_email" value="{{ $settings['contact_email'] ?? 'orders@desidelights.com' }}" class="w-full border rounded px-3 py-2">
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-2">Address</label>
@@ -90,6 +133,32 @@
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-2">Tax Rate (%)</label>
                         <input type="number" name="tax_rate" value="{{ $settings['tax_rate'] ?? '18' }}" step="0.01" class="w-full border rounded px-3 py-2">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Security Settings -->
+            <div class="bg-white rounded-lg shadow p-6">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">Security Settings</h3>
+                <div class="space-y-4">
+                    <div>
+                        <label class="flex items-center">
+                            <input type="checkbox" name="recaptcha_enabled" value="1" {{ ($settings['recaptcha_enabled'] ?? '0') == '1' ? 'checked' : '' }} class="mr-2">
+                            <span class="text-sm text-gray-700">Enable reCAPTCHA v3</span>
+                        </label>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">reCAPTCHA Site Key</label>
+                        <input type="text" name="recaptcha_site_key" value="{{ $settings['recaptcha_site_key'] ?? '' }}" class="w-full border rounded px-3 py-2" placeholder="Your reCAPTCHA v3 site key">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">reCAPTCHA Secret Key</label>
+                        <input type="password" name="recaptcha_secret_key" value="{{ $settings['recaptcha_secret_key'] ?? '' }}" class="w-full border rounded px-3 py-2" placeholder="Your reCAPTCHA v3 secret key">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">reCAPTCHA Score Threshold</label>
+                        <input type="number" name="recaptcha_threshold" value="{{ $settings['recaptcha_threshold'] ?? '0.5' }}" step="0.1" min="0" max="1" class="w-full border rounded px-3 py-2">
+                        <small class="text-gray-500">Score threshold (0.0 - 1.0). Higher values are more restrictive.</small>
                     </div>
                 </div>
             </div>
