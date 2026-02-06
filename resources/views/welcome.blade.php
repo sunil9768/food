@@ -1,24 +1,39 @@
 @extends('layouts.frontend')
 
 @section('content')
-    <!-- Hero Section -->
-    <section class="bg-gradient-to-r from-saffron to-curry text-white py-20">
+    <!-- Vendor Registration Hero Section -->
+    <section class="bg-gradient-to-r from-green-600 to-blue-600 text-white py-20">
         <div class="container mx-auto px-4 flex flex-col lg:flex-row items-center">
             <div class="lg:w-1/2 mb-10 lg:mb-0">
-                <h2 class="text-5xl font-bold mb-6">Fresh Roti & Sabji<br>Delivered Hot!</h2>
-                <p class="text-xl mb-8">Experience authentic Indian flavors with our signature Aalu Sabji and freshly made rotis, delivered straight to your doorstep.</p>
-                <button class="bg-white text-curry px-8 py-4 rounded-full text-lg font-semibold hover:bg-gray-100 transition shadow-lg">
-                    Order Aalu Sabji Special - ₹149
-                </button>
+                <h2 class="text-5xl font-bold mb-6">🏪 Grow Your Restaurant<br>Business Online!</h2>
+                <p class="text-xl mb-8">Join Desi Delights platform and reach thousands of hungry customers. Register your restaurant for FREE and start earning more today!</p>
+                <a href="{{ route('vendor.register') }}" class="bg-white text-green-600 px-8 py-4 rounded-full text-lg font-semibold hover:bg-gray-100 transition shadow-lg inline-block">
+                    Register Your Restaurant FREE
+                </a>
             </div>
             <div class="lg:w-1/2">
                 <div class="bg-white rounded-2xl p-8 shadow-2xl">
-                    <img src="https://images.unsplash.com/photo-1565557623262-b51c2513a641?w=500&h=400&fit=crop" 
-                         alt="Delicious Aalu Sabji with Roti" 
-                         class="w-full h-80 object-cover rounded-xl">
-                    <div class="mt-4 text-center">
-                        <h3 class="text-2xl font-bold text-gray-800">Aalu Sabji Special</h3>
-                        <p class="text-gray-600">Spiced potatoes with fresh roti</p>
+                    <div class="text-center mb-6">
+                        <div class="text-6xl mb-4">🍽️</div>
+                        <h3 class="text-2xl font-bold text-gray-800">Partner Benefits</h3>
+                    </div>
+                    <div class="space-y-4 text-gray-700">
+                        <div class="flex items-center">
+                            <span class="text-green-500 text-xl mr-3">✅</span>
+                            <span>Zero registration fees</span>
+                        </div>
+                        <div class="flex items-center">
+                            <span class="text-green-500 text-xl mr-3">✅</span>
+                            <span>Easy menu management</span>
+                        </div>
+                        <div class="flex items-center">
+                            <span class="text-green-500 text-xl mr-3">✅</span>
+                            <span>Real-time order tracking</span>
+                        </div>
+                        <div class="flex items-center">
+                            <span class="text-green-500 text-xl mr-3">✅</span>
+                            <span>Increase revenue by 40%</span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -33,35 +48,61 @@
                 <p class="text-xl text-gray-600 mb-8">Join thousands of restaurants growing their business with us</p>
                 
                 <div class="grid md:grid-cols-3 gap-8 mb-12">
-                    <div class="bg-white rounded-xl p-6 shadow-lg">
-                        <div class="text-4xl mb-4">🎆</div>
-                        <h3 class="text-xl font-bold text-gray-800 mb-2">100% FREE Registration</h3>
-                        <p class="text-gray-600">No setup fees, no monthly charges. Start selling immediately!</p>
+                    <div class="bg-gradient-to-br from-blue-50 to-indigo-100 rounded-2xl p-8 shadow-xl hover:shadow-2xl transform hover:-translate-y-2 transition-all duration-300 border border-blue-200">
+                        <div class="bg-gradient-to-r from-blue-500 to-indigo-600 w-16 h-16 rounded-full flex items-center justify-center mb-6 mx-auto">
+                            <div class="text-3xl text-white">🎆</div>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-800 mb-4 text-center">100% FREE Registration</h3>
+                        <p class="text-gray-600 text-center leading-relaxed">No setup fees, no monthly charges. Start selling immediately and grow your business!</p>
+                        <div class="mt-6 text-center">
+                            <span class="bg-blue-100 text-blue-800 px-4 py-2 rounded-full text-sm font-semibold">₹0 Setup Cost</span>
+                        </div>
                     </div>
-                    <div class="bg-white rounded-xl p-6 shadow-lg">
-                        <div class="text-4xl mb-4">💰</div>
-                        <h3 class="text-xl font-bold text-gray-800 mb-2">Increase Your Revenue</h3>
-                        <p class="text-gray-600">Reach more customers and boost your sales by up to 40%</p>
+                    <div class="bg-gradient-to-br from-green-50 to-emerald-100 rounded-2xl p-8 shadow-xl hover:shadow-2xl transform hover:-translate-y-2 transition-all duration-300 border border-green-200">
+                        <div class="bg-gradient-to-r from-green-500 to-emerald-600 w-16 h-16 rounded-full flex items-center justify-center mb-6 mx-auto">
+                            <div class="text-3xl text-white">💰</div>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-800 mb-4 text-center">Increase Your Revenue</h3>
+                        <p class="text-gray-600 text-center leading-relaxed">Reach more customers and boost your sales by up to 40% with our platform!</p>
+                        <div class="mt-6 text-center">
+                            <span class="bg-green-100 text-green-800 px-4 py-2 rounded-full text-sm font-semibold">+40% Revenue</span>
+                        </div>
                     </div>
-                    <div class="bg-white rounded-xl p-6 shadow-lg">
-                        <div class="text-4xl mb-4">🚚</div>
-                        <h3 class="text-xl font-bold text-gray-800 mb-2">Easy Order Management</h3>
-                        <p class="text-gray-600">Simple dashboard to manage orders, menu, and track earnings</p>
+                    <div class="bg-gradient-to-br from-purple-50 to-violet-100 rounded-2xl p-8 shadow-xl hover:shadow-2xl transform hover:-translate-y-2 transition-all duration-300 border border-purple-200">
+                        <div class="bg-gradient-to-r from-purple-500 to-violet-600 w-16 h-16 rounded-full flex items-center justify-center mb-6 mx-auto">
+                            <div class="text-3xl text-white">🚚</div>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-800 mb-4 text-center">Easy Order Management</h3>
+                        <p class="text-gray-600 text-center leading-relaxed">Simple dashboard to manage orders, menu, and track earnings effortlessly!</p>
+                        <div class="mt-6 text-center">
+                            <span class="bg-purple-100 text-purple-800 px-4 py-2 rounded-full text-sm font-semibold">Smart Dashboard</span>
+                        </div>
                     </div>
                 </div>
                 
-                <div class="bg-white rounded-2xl p-8 shadow-xl">
-                    <h3 class="text-2xl font-bold text-gray-800 mb-4">Ready to Get Started?</h3>
-                    <p class="text-gray-600 mb-6">Register your restaurant today and start listing your delicious items on our platform - completely FREE!</p>
-                    <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                        <a href="{{ route('vendor.register') }}" class="bg-gradient-to-r from-green-500 to-blue-500 text-white px-8 py-3 rounded-full hover:from-green-600 hover:to-blue-600 transition text-lg font-semibold">
-                            Register Your Restaurant FREE
+                <div class="bg-gradient-to-r from-orange-50 to-red-50 rounded-3xl p-10 shadow-2xl border border-orange-200">
+                    <div class="text-center mb-8">
+                        <div class="bg-gradient-to-r from-orange-500 to-red-500 w-20 h-20 rounded-full flex items-center justify-center mb-6 mx-auto">
+                            <div class="text-4xl text-white">🚀</div>
+                        </div>
+                        <h3 class="text-3xl font-bold text-gray-800 mb-4">Ready to Get Started?</h3>
+                        <p class="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">Register your restaurant today and start listing your delicious items on our platform - completely FREE!</p>
+                    </div>
+                    <div class="flex flex-col sm:flex-row gap-6 justify-center items-center">
+                        <a href="{{ route('vendor.register') }}" class="bg-gradient-to-r from-green-500 to-blue-500 text-white px-10 py-4 rounded-full hover:from-green-600 hover:to-blue-600 transition-all duration-300 text-xl font-bold shadow-lg hover:shadow-xl transform hover:-translate-y-1">
+                            🏪 Register Your Restaurant FREE
                         </a>
-                        <a href="#contact" class="border-2 border-gray-300 text-gray-700 px-8 py-3 rounded-full hover:border-gray-400 transition text-lg font-semibold">
-                            Learn More
+                        <a href="#contact" class="border-2 border-gray-400 text-gray-700 px-8 py-4 rounded-full hover:border-gray-600 hover:bg-gray-50 transition-all duration-300 text-lg font-semibold">
+                            📞 Learn More
                         </a>
                     </div>
-                    <p class="text-sm text-gray-500 mt-4">✨ Join 10+ restaurants already partnered with us</p>
+                    <div class="mt-8 text-center">
+                        <div class="flex justify-center items-center gap-4 text-sm text-gray-600">
+                            <span class="bg-white px-4 py-2 rounded-full shadow">✨ Join 10+ restaurants</span>
+                            <span class="bg-white px-4 py-2 rounded-full shadow">⚡ Quick Setup</span>
+                            <span class="bg-white px-4 py-2 rounded-full shadow">🎯 Instant Results</span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
