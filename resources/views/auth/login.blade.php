@@ -31,15 +31,7 @@
                 <form method="POST" action="{{ route('login') }}" class="space-y-6">
                     @csrf
                     
-                      @if ($errors->any())
-                        <div class="alert alert-danger">
-                            <ul style="margin-bottom:0;">
-                                @foreach ($errors->all() as $error)
-                                    <li style="color: red;">{{ $error }}</li>
-                                @endforeach
-                            </ul>
-                        </div>
-                    @endif
+                      
                     <div>
                         <label for="email" class="block text-sm font-medium text-gray-700 mb-2">Email Address</label>
                         <input id="email" type="email" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus
