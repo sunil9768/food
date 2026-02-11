@@ -61,6 +61,10 @@ class FrontendController extends Controller
         return view('welcome', compact('popularItems', 'categories', 'restaurants', 'settings'));
     }
     
+     public function partner()
+    {
+        return view('partner.index');
+    }
     public function cart()
     {
         $settings = [
