@@ -86,6 +86,7 @@
                 <nav class="hidden md:flex space-x-6">
                     <a href="{{ route('home') }}" class="text-gray-700 hover:text-curry">Home</a>
                     <a href="{{ route('menu') }}" class="text-gray-700 hover:text-curry">Menu</a>
+                      <a href="{{ route('partner') }}" class="text-gray-700 hover:text-curry">Partner </a>
                     <a href="{{ route('cart.view') }}" class="text-gray-700 hover:text-curry relative">
                         Cart
                         <span id="cartCount" class="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center hidden">0</span>
