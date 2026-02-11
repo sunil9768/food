@@ -182,7 +182,9 @@
                     <p class="text-gray-600 mb-4">{{ $item->description ?: 'Delicious ' . $item->name }}</p>
                     <div class="flex justify-between items-center">
                         <span class="text-2xl font-bold text-orange-600">₹{{ number_format($item->price) }}</span>
-                        <button onclick="addToCart({{ $item->id }}, '{{ $item->name }}', {{ $item->price }})" class="bg-orange-500 text-white px-4 py-2 rounded-full hover:bg-orange-600 transition">Add to Cart</button>
+                        <a href="{{ route('item.view', $item->id) }}" class="bg-orange-500 text-white px-4 py-2 rounded-full hover:bg-orange-600 transition">
+                            View Item
+                        </a>
                     </div>
                 </div>
                 @empty

@@ -63,7 +63,16 @@ class FrontendController extends Controller
     
      public function partner()
     {
-        return view('partner.index');
+        return view('partner');
+    }
+    
+    public function itemView($id)
+    {
+        $item = MenuItem::where('is_active', true)
+            ->with(['category', 'vendor'])
+            ->findOrFail($id);
+            
+        return view('frontend.item-view', compact('item'));
     }
     public function cart()
     {
