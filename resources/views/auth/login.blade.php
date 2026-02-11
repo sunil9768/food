@@ -23,6 +23,18 @@
                 <p class="text-gray-600">Sign in to your account to continue</p>
             </div>
             
+
+            @if ($errors->any())
+                <div class="alert alert-danger">
+                    <ul style="margin-bottom:0;">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
+
             <div class="bg-white rounded-2xl shadow-xl p-8">
                 <form method="POST" action="{{ route('login') }}" class="space-y-6">
                     @csrf
