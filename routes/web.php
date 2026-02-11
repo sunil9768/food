@@ -12,6 +12,7 @@ Route::get('/menu', [FrontendController::class, 'menu'])->name('menu');
 Route::get('/category/{slug}', [FrontendController::class, 'categoryItems'])->name('category.items');
 Route::get('/vendor/{id}/menu', [FrontendController::class, 'vendorMenu'])->name('vendor.menu.view');
 Route::get('/partner', [FrontendController::class, 'partner'])->name('partner');
+Route::get('/item/{id}', [FrontendController::class, 'itemView'])->name('item.view');
 Route::get('/cart', [FrontendController::class, 'cart'])->name('cart.view');
 Route::get('/csrf-token', function () {
     return response()->json(['csrf_token' => csrf_token()]);
