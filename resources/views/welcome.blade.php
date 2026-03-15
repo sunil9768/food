@@ -7,12 +7,14 @@
             <div class="lg:w-1/2 mb-10 lg:mb-0">
                 <h2 class="text-5xl font-bold mb-6">{!! $settings['hero_title'] !!}</h2>
                 <p class="text-xl mb-8">{{ $settings['hero_subtitle'] }}</p>
-                <a href="{{ route('vendor.register') }}" class="bg-white text-green-600 px-8 py-4 rounded-full text-lg font-semibold hover:bg-gray-100 transition shadow-lg inline-block">
-                    Register Your Restaurant FREE
-                </a>
-                 <a href="{{ route('partner') }}" class="bg-white text-green-600 px-8 py-4 rounded-full text-lg font-semibold hover:bg-gray-100 transition shadow-lg inline-block">
-                    Learn More
-                </a>
+                <div class="flex flex-col sm:flex-row gap-4">
+                    <a href="{{ route('vendor.register') }}" class="bg-white text-green-600 px-6 py-3 rounded-full text-base sm:text-lg font-semibold hover:bg-gray-100 transition shadow-lg text-center">
+                        Register Your Restaurant FREE
+                    </a>
+                    <a href="{{ route('partner') }}" class="bg-transparent border-2 border-white text-white px-6 py-3 rounded-full text-base sm:text-lg font-semibold hover:bg-white hover:text-green-600 transition shadow-lg text-center">
+                        Learn More
+                    </a>
+                </div>
             </div>
             <div class="lg:w-1/2">
                 <div class="bg-white rounded-2xl p-8 shadow-2xl">
