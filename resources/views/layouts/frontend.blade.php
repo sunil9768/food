@@ -73,12 +73,18 @@
                 </div>
                 
                 <!-- Search Bar -->
-                <div class="flex-1 max-w-md md:max-w-lg">
-                    <div class="relative">
-                        <input type="text" id="searchInput" placeholder="Search for dishes, restaurants..." class="w-full px-4 py-2 pl-10 pr-4 text-sm bg-gray-100 border-0 rounded-full focus:outline-none focus:ring-2 focus:ring-curry focus:bg-white">
-                        <svg class="absolute left-3 top-2.5 w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                        </svg>
+                <div class="flex-1 max-w-md md:max-w-lg relative">
+                    <form action="{{ route('search') }}" method="GET" class="relative">
+                        <input type="text" name="q" id="searchInput" placeholder="Search for dishes, restaurants..." class="w-full px-4 py-2 pl-10 pr-4 text-sm bg-gray-100 border-0 rounded-full focus:outline-none focus:ring-2 focus:ring-curry focus:bg-white" value="{{ request('q') }}" autocomplete="off">
+                        <button type="submit" class="absolute left-3 top-2.5 w-4 h-4 text-gray-400 hover:text-curry">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                            </svg>
+                        </button>
+                    </form>
+                    <!-- Search Suggestions -->
+                    <div id="searchSuggestions" class="absolute top-full left-0 right-0 bg-white border border-gray-200 rounded-lg shadow-lg z-50 hidden max-h-80 overflow-y-auto">
+                        <!-- Suggestions will be populated here -->
                     </div>
                 </div>
                 
@@ -286,6 +292,83 @@
             showConfirmButton: false
         });
     @endif
+    
+    // Search functionality with suggestions
+    let searchTimeout;
+    const searchInput = document.getElementById('searchInput');
+    const searchSuggestions = document.getElementById('searchSuggestions');
+    
+    if (searchInput && searchSuggestions) {
+        searchInput.addEventListener('input', function() {
+            const query = this.value.trim();
+            
+            clearTimeout(searchTimeout);
+            
+            if (query.length < 2) {
+                searchSuggestions.classList.add('hidden');
+                return;
+            }
+            
+            searchTimeout = setTimeout(() => {
+                fetch(`{{ route('search') }}?q=${encodeURIComponent(query)}`, {
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'Accept': 'application/json'
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.length > 0) {
+                        let html = '';
+                        data.forEach(item => {
+                            html += `
+                                <div class="p-3 hover:bg-gray-50 cursor-pointer border-b border-gray-100 last:border-b-0" onclick="selectSuggestion('${item.name}')">
+                                    <div class="flex justify-between items-center">
+                                        <div>
+                                            <div class="font-medium text-gray-800">${item.name}</div>
+                                            <div class="text-sm text-gray-500">${item.restaurant}</div>
+                                        </div>
+                                        <div class="text-orange-600 font-semibold">₹${item.price}</div>
+                                    </div>
+                                </div>
+                            `;
+                        });
+                        searchSuggestions.innerHTML = html;
+                        searchSuggestions.classList.remove('hidden');
+                    } else {
+                        searchSuggestions.classList.add('hidden');
+                    }
+                })
+                .catch(() => {
+                    searchSuggestions.classList.add('hidden');
+                });
+            }, 300);
+        });
+        
+        searchInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                const query = this.value.trim();
+                if (query) {
+                    searchSuggestions.classList.add('hidden');
+                    window.location.href = `{{ route('search') }}?q=${encodeURIComponent(query)}`;
+                }
+            }
+        });
+        
+        // Hide suggestions when clicking outside
+        document.addEventListener('click', function(e) {
+            if (!searchInput.contains(e.target) && !searchSuggestions.contains(e.target)) {
+                searchSuggestions.classList.add('hidden');
+            }
+        });
+    }
+    
+    function selectSuggestion(itemName) {
+        searchInput.value = itemName;
+        searchSuggestions.classList.add('hidden');
+        window.location.href = `{{ route('search') }}?q=${encodeURIComponent(itemName)}`;
+    }
     </script>
     
     @yield('scripts')
