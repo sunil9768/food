@@ -127,9 +127,9 @@
                                             
                                             <div class="flex justify-between items-center">
                                                 <span class="text-base sm:text-lg font-bold text-orange-600">₹{{ number_format($item->price) }}</span>
-                                                <button onclick="addToCart({{ $item->id }}, '{{ $item->name }}', {{ $item->price }})" class="bg-orange-500 text-white px-3 py-1 rounded-full hover:bg-orange-600 transition text-xs sm:text-sm">
-                                                    Add
-                                                </button>
+                                                <a href="{{ route('item.view', $item->id) }}" class="bg-orange-500 text-white px-3 py-1 rounded-full hover:bg-orange-600 transition text-xs sm:text-sm">
+                                                    View
+                                                </a>
                                             </div>
                                         </div>
                                     @endforeach

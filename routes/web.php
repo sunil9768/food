@@ -8,6 +8,7 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\AuthController;
 
 Route::get('/', [FrontendController::class, 'index'])->name('home');
+Route::get('/search', [FrontendController::class, 'search'])->name('search');
 Route::get('/menu', [FrontendController::class, 'menu'])->name('menu');
 Route::get('/category/{slug}', [FrontendController::class, 'categoryItems'])->name('category.items');
 Route::get('/vendor/{id}/menu', [FrontendController::class, 'vendorMenu'])->name('vendor.menu.view');

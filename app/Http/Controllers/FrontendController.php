@@ -61,7 +61,56 @@ class FrontendController extends Controller
         return view('welcome', compact('popularItems', 'categories', 'restaurants', 'settings'));
     }
     
-     public function partner()
+    public function search(Request $request)
+    {
+        $query = $request->get('q');
+        
+        if (empty($query)) {
+            return redirect()->route('home');
+        }
+        
+        // AJAX request for suggestions
+        if ($request->ajax()) {
+            $suggestions = MenuItem::where('is_active', true)
+                ->where(function($q) use ($query) {
+                    $q->where('name', 'LIKE', '%' . $query . '%')
+                      ->orWhere('description', 'LIKE', '%' . $query . '%');
+                })
+                ->with(['vendor'])
+                ->limit(5)
+                ->get()
+                ->map(function($item) {
+                    return [
+                        'id' => $item->id,
+                        'name' => $item->name,
+                        'restaurant' => $item->vendor ? ($item->vendor->restaurant_name ?: $item->vendor->name) : '',
+                        'price' => $item->price
+                    ];
+                });
+                
+            return response()->json($suggestions);
+        }
+        
+        $menuItems = MenuItem::where('is_active', true)
+            ->where(function($q) use ($query) {
+                $q->where('name', 'LIKE', '%' . $query . '%')
+                  ->orWhere('description', 'LIKE', '%' . $query . '%');
+            })
+            ->with(['category', 'vendor'])
+            ->paginate(12);
+            
+        $settings = [
+            'contact_phone' => Setting::get('contact_phone', '+91 98765 43210'),
+            'contact_email' => Setting::get('contact_email', 'orders@desidelights.com'),
+            'opening_time' => Setting::get('opening_time', '11:00'),
+            'closing_time' => Setting::get('closing_time', '23:00'),
+            'free_delivery_above' => Setting::get('free_delivery_above', '299')
+        ];
+            
+        return view('frontend.search-results', compact('menuItems', 'query', 'settings'));
+    }
+
+    public function partner()
     {
         return view('partner');
     }
